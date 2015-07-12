@@ -1,43 +1,39 @@
 var calculate = function () {
 
-    var centigradeToFahrenheit = function (degrees) {
-        return 9 / 5 * degrees + 32;
+    var FAHR_TO_CENT = '1';
+    var CENT_TO_FAHR = '2';
+
+    var converters = {};
+
+    converters[CENT_TO_FAHR] = {
+        calculate: function (degrees) {
+            return 9 / 5 * degrees + 32;
+        },
+        description: "°F"
     };
 
-    var fahrenheitToCentigrade = function (degrees) {
-        return 5 / 9 * (degrees - 32);
-    };
-
-    var toInt = function (value) {
-        return parseInt(value, 10);
+    converters[FAHR_TO_CENT] = {
+        calculate: function (degrees) {
+            return 5 / 9 * (degrees - 32);
+        },
+        description: "°C"
     };
 
     var convert = function (converter, temperature) {
-        return toInt(
-            converter(temperature)
-        );
+        return converter.calculate(temperature).toFixed(2);
     };
 
-    var description = function (isFahrenheitToCentigradeConversion) {
-        return isFahrenheitToCentigradeConversion
-            ? "° Centigrade"
-            : "° Fahrenheit";
-    };
+    var temperature = parseInt(
+        document.getElementById('temperature').value, 10
+    );
 
-    var temperature = document.getElementById('temperature').value;
-    temperature = toInt(temperature);
-
-    var typeOfConversion = document.getElementById('conversionType').value,
-        isFahrenheitToCentigradeConversion = '1' === typeOfConversion;
-
-    var converter = isFahrenheitToCentigradeConversion
-        ? fahrenheitToCentigrade
-        : centigradeToFahrenheit;
+    var typeOfConversion = document.getElementById('conversionType').value;
+    var converter = converters[typeOfConversion];
 
     var result = convert(converter, temperature);
 
     document.getElementById('result').innerText =
-        result.toString() + description(isFahrenheitToCentigradeConversion);
+        result.toString() + converter.description;
 };
 
 calculate();
