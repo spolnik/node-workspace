@@ -1,16 +1,17 @@
 var calculate = function () {
+    'use strict';
 
-    var FAHR_TO_CENT = '1';
-    var CENT_TO_FAHR = '2';
+    var FAHRENHEIT_TO_CENT = '1';
+    var CENT_TO_FAHRENHEIT = '2';
 
     var converters = {};
-    converters[CENT_TO_FAHR] = new Converter(
+    converters[CENT_TO_FAHRENHEIT] = new Converter(
         function (degrees) {
             return 9 / 5 * degrees + 32;
         },
         " °F"
     );
-    converters[FAHR_TO_CENT] = new Converter(
+    converters[FAHRENHEIT_TO_CENT] = new Converter(
         function (degrees) {
             return 5 / 9 * (degrees - 32);
         },
@@ -30,11 +31,13 @@ var calculate = function () {
 };
 
 function Converter(calculate, description) {
+    'use strict';
     this.calculate = calculate;
     this.description = description;
 }
 
 Converter.prototype.convert = function (temperature) {
+    'use strict';
     return this.calculate(temperature).toFixed(2) + this.description;
 };
 

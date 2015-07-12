@@ -1,10 +1,11 @@
 var search = function () {
+    'use strict';
 
     var position = 0;
     var wordCount = 0;
 
     var isFound = function (position) {
-        return position != -1
+        return position !== -1;
     };
 
     var input = document.getElementById('input').innerHTML.trim();
@@ -13,7 +14,7 @@ var search = function () {
     while (isFound(position)) {
         position = input.indexOf(word, position);
 
-        if (position != -1) {
+        if (isFound(position)) {
             wordCount++;
             position++;
         }
