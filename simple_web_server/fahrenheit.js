@@ -4,36 +4,38 @@ var calculate = function () {
     var CENT_TO_FAHR = '2';
 
     var converters = {};
-
-    converters[CENT_TO_FAHR] = {
-        calculate: function (degrees) {
+    converters[CENT_TO_FAHR] = new Converter(
+        function (degrees) {
             return 9 / 5 * degrees + 32;
         },
-        description: "°F"
-    };
-
-    converters[FAHR_TO_CENT] = {
-        calculate: function (degrees) {
+        " °F"
+    );
+    converters[FAHR_TO_CENT] = new Converter(
+        function (degrees) {
             return 5 / 9 * (degrees - 32);
         },
-        description: "°C"
-    };
-
-    var convert = function (converter, temperature) {
-        return converter.calculate(temperature).toFixed(2);
-    };
+        " °C"
+    );
 
     var temperature = parseInt(
         document.getElementById('temperature').value, 10
     );
 
     var typeOfConversion = document.getElementById('conversionType').value;
+
     var converter = converters[typeOfConversion];
 
-    var result = convert(converter, temperature);
-
     document.getElementById('result').innerText =
-        result.toString() + converter.description;
+        converter.convert(temperature);
 };
+
+function Converter(calculate, description) {
+    this.calculate = calculate;
+    this.description = description;
+
+    this.convert = function (temperature) {
+        return this.calculate(temperature).toFixed(2) + this.description;
+    };
+}
 
 calculate();
