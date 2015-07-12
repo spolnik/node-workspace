@@ -32,10 +32,10 @@ var calculate = function () {
 function Converter(calculate, description) {
     this.calculate = calculate;
     this.description = description;
-
-    this.convert = function (temperature) {
-        return this.calculate(temperature).toFixed(2) + this.description;
-    };
 }
+
+Converter.prototype.convert = function (temperature) {
+    return this.calculate(temperature).toFixed(2) + this.description;
+};
 
 calculate();
