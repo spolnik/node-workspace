@@ -48,13 +48,13 @@ $(document).ready(function() {
     };
 
     $('#temperature')
-        .on('change paste keyup', calculate)
         .val(10)
-        .trigger('change')
         .focus()
         .keydown(filterNonNumeric);
 
-    $('#conversionType').on('change keyup', calculate);
+    $('#temperatureForm')
+        .on('input', calculate)
+        .trigger('input');
 });
 
 
