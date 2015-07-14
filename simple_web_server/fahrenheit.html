@@ -25,9 +25,8 @@
                 </div>
                 <div class="form-group">
                     <label for="temperature">Temperature</label>
-                    <input type="text" id="temperature" value="10" class="form-control" placeholder="Value"/>
+                    <input type="text" id="temperature" class="form-control" placeholder="Value"/>
                 </div>
-                <input class="btn btn-info btn-block" type="button" onclick="calculate()" value="Convert"/>
             </form>
         </div>
         <div class="container col-sm-4 col-sm-offset-4">
@@ -40,13 +39,18 @@
 
     <hr class="divider">
 
-    <footer>
-        <p class="pull-right"><a href="#">Back to top</a></p>
-
-        <p>© 2015 Company, Inc. · <a href="#">Privacy</a> · <a href="#">Terms</a></p>
-    </footer>
 </div>
 
+<footer class="footer">
+    <div class="container">
+        <p class="pull-right"><a href="#">Back to top</a></p>
+
+        <p>© 2015 Company, Inc. · <a href="#">Privacy</a> · <a
+                href="#">Terms</a></p>
+    </div>
+</footer>
+
+<script src="bower_components/jquery/dist/jquery.min.js"></script>
 <script src="fahrenheit.js"></script>
 </body>
 </html>

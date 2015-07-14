@@ -1,27 +1,50 @@
-var search = function () {
+$(document).ready(function () {
     'use strict';
 
-    var position = 0;
-    var wordCount = 0;
+    var search = function () {
 
-    var isFound = function (position) {
-        return position !== -1;
+        var countWord = function (word, input) {
+            var position = 0;
+            var wordCount = 0;
+
+            var isFound = function (position) {
+                return position !== -1;
+            };
+
+            while (isFound(position)) {
+                position = input.indexOf(word, position);
+
+                if (isFound(position)) {
+                    wordCount++;
+                    position++;
+                }
+            }
+
+            return wordCount;
+        };
+
+        var wordCount = 0;
+
+        var $text = $('#text');
+
+        $text.unhighlight();
+
+        var input = $text.html().trim();
+
+        var word = $('#searchFor').val();
+
+        if (word) {
+            wordCount = countWord(word, input);
+        }
+
+        $text.highlight(word);
+
+        $('#result').html("There are " + wordCount + " occurrences of the word " + word + ".");
     };
 
-    var input = document.getElementById('input').innerHTML.trim();
-    var word = document.getElementById('word').value;
-
-    while (isFound(position)) {
-        position = input.indexOf(word, position);
-
-        if (isFound(position)) {
-            wordCount++;
-            position++;
-        }
-    }
-
-    document.getElementById('result').innerHTML =
-        "There are " + wordCount + " occurrences of the word " + word;
-};
-
-search();
+    $('#searchFor')
+        .on('change paste keyup', search)
+        .val('in')
+        .trigger('change')
+        .focus();
+});

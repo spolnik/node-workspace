@@ -3,5 +3,37 @@ footer {
 }
 
 .divider {
-    margin: 80px 0;
+    margin: 40px 0;
+}
+
+.highlight {
+    background-color: #00cc99;
+}
+
+body {
+    background: #f4f4f4;
+    color: rgb(48, 58, 76);
+}
+
+.well {
+    background: #ffffff;
+}
+
+footer, .jumbotron {
+    background: rgb(48, 58, 76);
+    color: #00cc99;
+    min-height: 100px;
+}
+
+footer p {
+    color: #FFF;
+    margin: 20px 0;
+}
+
+footer a {
+    color: #00cc99;
+}
+
+footer a:hover {
+    color: #fff;
 }
