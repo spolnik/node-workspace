@@ -42,9 +42,9 @@ $(document).ready(function () {
         $('#result').html("There are " + wordCount + " occurrences of the word " + word + ".");
     };
 
-    $('#searchFor')
-        .on('change paste keyup', search)
-        .val('in')
-        .trigger('change')
-        .focus();
+    $('#searchTextBox').val('in');
+
+    $('form')
+        .on('input', search)
+        .trigger('input');
 });

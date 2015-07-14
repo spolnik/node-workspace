@@ -49,7 +49,6 @@ $(document).ready(function() {
 
     $('#temperature')
         .val(10)
-        .focus()
         .keydown(filterNonNumeric);
 
     $('#temperatureForm')
