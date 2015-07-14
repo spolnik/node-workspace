@@ -31,7 +31,7 @@ $(document).ready(function () {
 
         var input = $text.html().trim();
 
-        var word = $('#searchFor').val();
+        var word = $('#searchTextBox').val();
 
         if (word) {
             wordCount = countWord(word, input);
