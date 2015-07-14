@@ -51,7 +51,7 @@ $(document).ready(function() {
         .val(10)
         .keydown(filterNonNumeric);
 
-    $('#temperatureForm')
+    $('form')
         .on('input', calculate)
         .trigger('input');
 });
