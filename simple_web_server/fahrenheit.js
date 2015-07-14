@@ -2,7 +2,6 @@ $(document).ready(function() {
     'use strict';
 
     var calculate = function () {
-        'use strict';
 
         var FAHRENHEIT_TO_CENT = '1';
         var CENT_TO_FAHRENHEIT = '2';
