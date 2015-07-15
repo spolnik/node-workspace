@@ -1,55 +1,18 @@
+'use strict';
+
 $(document).ready(function() {
-    'use strict';
 
     var calculate = function () {
 
-        var FAHRENHEIT_TO_CENT = '1';
-        var CENT_TO_FAHRENHEIT = '2';
+        var temperature = parseFloat($('#temperature').val()),
+            typeOfConversion = $('#conversionType').val(),
+            converter = new TemperatureConverter();
 
-        var converters = {};
-        converters[CENT_TO_FAHRENHEIT] = new Converter(
-            function (degrees) {
-                return 9 / 5 * degrees + 32;
-            },
-            " °F"
-        );
-        converters[FAHRENHEIT_TO_CENT] = new Converter(
-            function (degrees) {
-                return 5 / 9 * (degrees - 32);
-            },
-            " °C"
-        );
-
-        var temperature = parseInt(
-            $('#temperature').val(), 10
-        );
-
-        var typeOfConversion = $('#conversionType').val();
-
-        var converter = converters[typeOfConversion];
-
-        $('#result').html(converter.convert(temperature));
-    };
-
-    var filterNonNumeric = function (e) {
-        // Allow: backspace, delete, tab, escape, enter and .
-        if ($.inArray(e.keyCode, [46, 8, 9, 27, 13, 110, 190]) !== -1 ||
-                // Allow: Ctrl+A, Command+A
-            (e.keyCode === 65 && ( e.ctrlKey === true || e.metaKey === true ) ) ||
-                // Allow: home, end, left, right, down, up
-            (e.keyCode >= 35 && e.keyCode <= 40)) {
-            // let it happen, don't do anything
-            return;
-        }
-        // Ensure that it is a number and stop the keypress
-        if ((e.shiftKey || (e.keyCode < 48 || e.keyCode > 57)) && (e.keyCode < 96 || e.keyCode > 105)) {
-            e.preventDefault();
-        }
+        $('#result').text(converter.convert(typeOfConversion, temperature));
     };
 
     $('#temperature')
-        .val(10)
-        .keydown(filterNonNumeric);
+        .val(10);
 
     $('form')
         .on('input', calculate)
@@ -58,13 +21,39 @@ $(document).ready(function() {
 
 
 
-function Converter(calculate, description) {
-    'use strict';
-    this.calculate = calculate;
-    this.description = description;
+function TemperatureConverter(typeOfConversion) {
 }
 
-Converter.prototype.convert = function (temperature) {
-    'use strict';
-    return this.calculate(temperature).toFixed(2) + this.description;
+TemperatureConverter.prototype.convert = function (typeOfConversion, temperature) {
+
+    if (typeOfConversion === this.FAHRENHEIT_TO_CENT) {
+        return this.fahrenheitToCentigrade(temperature).toFixed(2) + this.centigradeSymbol();
+    }
+
+    if (typeOfConversion === this.CENT_TO_FAHRENHEIT) {
+        var result = this.centigradeToFahrenheit(temperature).toFixed(2);
+        result = result === "-0.00" ? "0.00" : result;
+        return result + this.fahrenheitSymbol();
+    }
+
+    throw 'Invalid type of conversion: ' + typeOfConversion;
 };
+
+TemperatureConverter.prototype.fahrenheitToCentigrade = function(temperature) {
+    return 5 / 9 * (temperature - 32);
+};
+
+TemperatureConverter.prototype.centigradeToFahrenheit = function (temperature) {
+    return 9 / 5 * temperature + 32;
+};
+
+TemperatureConverter.prototype.fahrenheitSymbol = function() {
+    return " °F";
+};
+
+TemperatureConverter.prototype.centigradeSymbol = function () {
+    return " °C";
+};
+
+TemperatureConverter.prototype.FAHRENHEIT_TO_CENT = '1';
+TemperatureConverter.prototype.CENT_TO_FAHRENHEIT = '2';

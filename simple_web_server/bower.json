@@ -19,6 +19,7 @@
   "dependencies": {
     "bootstrap": "~3.3.5",
     "jquery": "~2.1.4",
-    "jquery-highlight": "~3.2.2"
+    "jquery-highlight": "~3.2.2",
+    "jasmine": "~2.3.4"
   }
 }
