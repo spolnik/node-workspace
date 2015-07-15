@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Arrays</title>
+</head>
+<body>
+<script>
+    var writeLine = function (text) {
+        text = text || '';
+
+        document.write(text + "</br>");
+    };
+
+    var myArray = [];
+    myArray[0] = "Julia";
+    myArray[1] = "Mikolaj";
+    myArray[2] = "Jacek";
+
+    myArray.forEach(function(item, id) {
+        writeLine("myArray[" + id + "] = " + item);
+    });
+
+    writeLine();
+    myArray[1] = "Madzia";
+    writeLine("myArray[1] changed to " + myArray[1]);
+
+    myArray[3] = "4 family members";
+
+    writeLine();
+    writeLine("There is " + parseInt(myArray[3], 10) + " family members.");
+</script>
+</body>
+</html>

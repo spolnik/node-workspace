@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Fahrenheit Calculator</title>
+    <link rel="stylesheet" href="bower_components/bootstrap/dist/css/bootstrap.min.css"/>
+    <link rel="stylesheet" href="main.css"/>
+</head>
+<body>
+<div class="container">
+    <div class="jumbotron">
+        <h2>Temperature converter</h2>
+    </div>
+
+    <div class="container">
+        <div class="container col-sm-4 col-sm-offset-4">
+            <form>
+                <div class="form-group">
+                    <label for="conversionType">Type of conversion</label>
+                    <select name="conversionType" id="conversionType"
+                            class="form-control">
+                        <option value="1">Fahrenheit to Centigrade</option>
+                        <option value="2">Centigrade to Fahrenheit</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="temperature">Temperature</label>
+                    <input type="text" id="temperature" class="form-control"
+                           placeholder="Value" maxlength="10" autofocus />
+                </div>
+                <output>
+                    <span id="result" class="text-success"></span>
+                </output>
+            </form>
+        </div>
+    </div>
+
+    <hr class="divider">
+
+</div>
+
+<footer class="footer">
+    <div class="container">
+        <p class="pull-right"><a href="#">Back to top</a></p>
+
+        <p>© 2015 Company, Inc. · <a href="#">Privacy</a> · <a
+                href="#">Terms</a></p>
+    </div>
+</footer>
+
+<script src="bower_components/jquery/dist/jquery.min.js"></script>
+<script src="js/fahrenheit.js"></script>
+</body>
+</html>
+
