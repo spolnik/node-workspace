@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>JavaScript quiz</title>
+    <link rel="stylesheet"
+          href="bower_components/bootstrap/dist/css/bootstrap.min.css"/>
+    <link rel="stylesheet" href="css/main.css"/>
+    <link rel="stylesheet" href="css/quiz.css"/>
+</head>
+<body>
+
+<div class="container">
+    <div class="jumbotron">
+        <h2>JavaScript quiz</h2>
+    </div>
+
+    <div class="container well col-md-8 col-md-offset-2">
+        <h2><span id="title">This is title</span></h2>
+        <h3><span id="subtitle">This is subtitle</span></h3>
+        <form>
+            <div class="form-group">
+                <div class="radio">
+                    <label>
+                        <input type="radio" name="answers" id="answer1" value="1"/>
+                        Question number 1
+                    </label>
+                </div>
+                <div class="radio">
+                    <label>
+                        <input type="radio" name="answers" id="answer2" value="2"/>
+                        Question number 2
+                    </label>
+                </div>
+                <div class="radio">
+                    <label>
+                        <input type="radio" name="answers" id="answer3" value="3"/>
+                        Question number 3
+                    </label>
+                </div>
+                <div class="radio">
+                    <label>
+                        <input type="radio" name="answers" id="answer4" value="4"/>
+                        Question number 3
+                    </label>
+                </div>
+            </div>
+            <button type="submit" class="btn btn-info btn-lg">Next</button>
+        </form>
+    </div>
+    <div class="container col-md-8 col-md-offset-2">
+        <span class="pull-left">Total 25 answers</span>
+        <span class="pull-right">Time spent 0:00</span>
+    </div>
+
+</div>
+
+<hr class="divider">
+
+<footer class="footer">
+    <div class="container">
+        <p class="pull-right"><a href="#">Back to top</a></p>
+
+        <p>© 2015 Company, Inc. · <a href="#">Privacy</a> · <a
+                href="#">Terms</a></p>
+    </div>
+</footer>
+
+<script src="bower_components/jquery/dist/jquery.min.js"></script>
+<script src="js/quiz.js"></script>
+</body>
+</html>

@@ -1,12 +1,15 @@
-var countWord = function (word, input) {
-    'use strict';
+'use strict';
 
-    if (!word) { return 0; }
+var countWord = function(word, input) {
+
+    if (!word) {
+        return 0;
+    }
 
     var position = 0;
     var wordCount = 0;
 
-    var isFound = function (position) {
+    var isFound = function(position) {
         return position !== -1;
     };
 
@@ -22,10 +25,9 @@ var countWord = function (word, input) {
     return wordCount;
 };
 
-$(document).ready(function () {
-    'use strict';
+$(document).ready(function() {
 
-    var search = function () {
+    var search = function() {
 
         var $text = $('#text');
         $text.unhighlight();
@@ -38,7 +40,9 @@ $(document).ready(function () {
 
         $text.highlight(word);
 
-        $('#result').text("There are " + wordCount + " occurrences of the word " + word + ".");
+        $('#result').text(
+            "There are " + wordCount + " occurrences of the word " + word + "."
+        );
     };
 
     $('#searchTextBox').val('in');
