@@ -9,7 +9,7 @@ var main = function () {
 
     var snapshot = new Date();
 
-    setInterval(function () {
+    var timerHandler = setInterval(function () {
 
         var withLeadingZero = function(seconds) {
             return seconds < 10 ? '0' + seconds : seconds;
@@ -69,6 +69,8 @@ var main = function () {
         if (quiz.count === quiz.currentQuestionId()) {
             $(this).text('Finish');
         } else if (quiz.count < quiz.currentQuestionId()) {
+            clearInterval(timerHandler);
+
             $('#quizForm').hide();
             $('#result').text(quiz.allPoints());
             $('#count').text(quiz.count);
