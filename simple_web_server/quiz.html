@@ -14,44 +14,69 @@
     <div class="jumbotron">
         <h2>JavaScript quiz</h2>
     </div>
+    <div id="quizForm">
+        <div class="alert alert-danger hide" role="alert" id="error">
+            <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+            <span class="sr-only">Error:</span>
+            You have to choose answer
+        </div>
+        <div class="container well col-md-8 col-md-offset-2">
 
-    <div class="container well col-md-8 col-md-offset-2">
-        <h2><span id="title">This is title</span></h2>
-        <h3><span id="subtitle">This is subtitle</span></h3>
-        <form>
-            <div class="form-group">
-                <div class="radio">
-                    <label>
-                        <input type="radio" name="answers" id="answer1" value="1"/>
-                        Question number 1
-                    </label>
+            <h2><span id="title">Internal error.</span></h2>
+            <h3><span id="subtitle">Some problem appear.</span></h3>
+            <form>
+                <div class="form-group">
+                    <div class="radio">
+                        <label>
+                            <input type="radio" name="answers" id="answer1" value="0" />
+                            Not defined.
+                        </label>
+                    </div>
+                    <div class="radio">
+                        <label>
+                            <input type="radio" name="answers" id="answer2" value="1" />
+                            Not defined.
+                        </label>
+                    </div>
+                    <div class="radio">
+                        <label>
+                            <input type="radio" name="answers" id="answer3" value="2" />
+                            Not defined.
+                        </label>
+                    </div>
+                    <div class="radio">
+                        <label>
+                            <input type="radio" name="answers" id="answer4" value="3" />
+                            Not defined.
+                        </label>
+                    </div>
                 </div>
-                <div class="radio">
-                    <label>
-                        <input type="radio" name="answers" id="answer2" value="2"/>
-                        Question number 2
-                    </label>
-                </div>
-                <div class="radio">
-                    <label>
-                        <input type="radio" name="answers" id="answer3" value="3"/>
-                        Question number 3
-                    </label>
-                </div>
-                <div class="radio">
-                    <label>
-                        <input type="radio" name="answers" id="answer4" value="4"/>
-                        Question number 3
-                    </label>
-                </div>
+                <button type="submit" class="btn btn-info btn-lg">Next</button>
+            </form>
+        </div>
+        <div class="container col-md-8 col-md-offset-2">
+            <span class="pull-left">Total <span id="howManyAlreadyDone">0</span>/<span id="numberOfQuestions">y</span> answers</span>
+            <span class="pull-right">Time spent <span id="time">0:00</span></span>
+        </div>
+    </div>
+    <div id="summary" class="hide">
+        <div class="container well col-md-8 col-md-offset-2">
+            <div class="center">
+                <h2>Result:</h2>
+                <h3 class="text-success"><span id="result">0</span> of <span id="count">x</span></h3>
+                <h4 class="text-success"><span id="resultPercent">0</span>%</h4>
+                <h2>Time Spent:</h2>
+                <h3 class="text-info"><span id="timeSpent">0:00</span></h3>
             </div>
-            <button type="submit" class="btn btn-info btn-lg">Next</button>
-        </form>
+            <input type="button" class="btn btn-info btn-lg pull-left" value="Check your answers" />
+            <input type="button" class="btn btn-info btn-lg pull-right" onClick="window.location.reload()" value="Try Again" />
+        </div>
     </div>
-    <div class="container col-md-8 col-md-offset-2">
-        <span class="pull-left">Total 25 answers</span>
-        <span class="pull-right">Time spent 0:00</span>
-    </div>
+
+    <!--TODO:
+        - check your answers?
+        - stop timer once app is stopped
+    -->
 
 </div>
 
