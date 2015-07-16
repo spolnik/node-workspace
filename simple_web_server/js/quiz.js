@@ -49,35 +49,43 @@ var main = function () {
         event.preventDefault();
 
         var $error = $('#error');
-        $error.addClass('hide');
+        $error.hide('fast');
 
         var $input = $('input:checked');
 
         var answer = $input.val();
         if (answer === undefined) {
-            $error.removeClass('hide');
+            $error.show('fast');
             return;
         }
+
 
         $input.prop('checked', false);
 
         quiz.checkAnswer(answer);
-        quiz.moveToNextQuestion();
-        $('#howManyAlreadyDone').text(quiz.index);
-        applyQuestion(quiz.currentQuestion(), quiz.currentQuestionId());
 
-        if (quiz.count === quiz.currentQuestionId()) {
-            $(this).text('Finish');
-        } else if (quiz.count < quiz.currentQuestionId()) {
-            clearInterval(timerHandler);
+        var $well = $('.well');
 
-            $('#quizForm').hide();
-            $('#result').text(quiz.allPoints());
-            $('#count').text(quiz.count);
-            $('#resultPercent').text(quiz.allPoints() / quiz.count * 100.00);
-            $('#timeSpent').text($('#time').text());
-            $('#summary').removeClass('hide');
-        }
+        $well.fadeOut('fast').promise().done( function () {
+            quiz.moveToNextQuestion();
+            $('#howManyAlreadyDone').text(quiz.index);
+            applyQuestion(quiz.currentQuestion(), quiz.currentQuestionId());
+            $well.fadeIn('fast');
+
+            if (quiz.count === quiz.currentQuestionId()) {
+                $('#btnNext').text('Finish');
+            } else if (quiz.count < quiz.currentQuestionId()) {
+                clearInterval(timerHandler);
+
+                $('#result').text(quiz.allPoints());
+                $('#count').text(quiz.count);
+                $('#resultPercent').text(quiz.allPoints() / quiz.count * 100.00);
+                $('#timeSpent').text($('#time').text());
+
+                $('#quizForm').hide('slow');
+                $('#summary').show('slow');
+            }
+        });
     });
 };
 

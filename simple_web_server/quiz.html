@@ -15,7 +15,7 @@
         <h2>JavaScript quiz</h2>
     </div>
     <div id="quizForm">
-        <div class="alert alert-danger hide" role="alert" id="error">
+        <div class="alert alert-danger" role="alert" id="error">
             <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
             <span class="sr-only">Error:</span>
             You have to choose answer
@@ -51,7 +51,8 @@
                         </label>
                     </div>
                 </div>
-                <button type="submit" class="btn btn-info btn-lg">Next</button>
+                <button type="submit" class="btn btn-info btn-lg pull-left" id="btnNext">Next</button>
+                <button type="submit" class="btn btn-info btn-lg pull-right disabled" id="btnBack">Back</button>
             </form>
         </div>
         <div class="container col-md-8 col-md-offset-2">
@@ -59,7 +60,7 @@
             <span class="pull-right">Time spent <span id="time">0:00</span></span>
         </div>
     </div>
-    <div id="summary" class="hide">
+    <div id="summary">
         <div class="container well col-md-8 col-md-offset-2">
             <div class="center">
                 <h2>Result:</h2>

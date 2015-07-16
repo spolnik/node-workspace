@@ -15,3 +15,7 @@ button {
 .center {
     text-align: center;
 }
+
+#error, #summary {
+    display: none;
+}
