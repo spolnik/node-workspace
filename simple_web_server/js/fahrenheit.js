@@ -2,7 +2,7 @@
 
 $(document).ready(function() {
 
-    var calculate = function () {
+    var calculate = function() {
 
         var temperature = parseFloat($('#temperature').val()),
             typeOfConversion = $('#conversionType').val(),
@@ -19,12 +19,9 @@ $(document).ready(function() {
         .trigger('input');
 });
 
+function TemperatureConverter(typeOfConversion) {}
 
-
-function TemperatureConverter(typeOfConversion) {
-}
-
-TemperatureConverter.prototype.convert = function (typeOfConversion, temperature) {
+TemperatureConverter.prototype.convert = function(typeOfConversion, temperature) {
 
     if (typeOfConversion === this.FAHRENHEIT_TO_CENT) {
         return this.fahrenheitToCentigrade(temperature).toFixed(2) + this.centigradeSymbol();
@@ -43,7 +40,7 @@ TemperatureConverter.prototype.fahrenheitToCentigrade = function(temperature) {
     return 5 / 9 * (temperature - 32);
 };
 
-TemperatureConverter.prototype.centigradeToFahrenheit = function (temperature) {
+TemperatureConverter.prototype.centigradeToFahrenheit = function(temperature) {
     return 9 / 5 * temperature + 32;
 };
 
@@ -51,7 +48,7 @@ TemperatureConverter.prototype.fahrenheitSymbol = function() {
     return " °F";
 };
 
-TemperatureConverter.prototype.centigradeSymbol = function () {
+TemperatureConverter.prototype.centigradeSymbol = function() {
     return " °C";
 };
 
