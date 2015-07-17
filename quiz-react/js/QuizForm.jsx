@@ -33,7 +33,7 @@ var QuizProgress = React.createClass({
         return (
             <div className="answersCounter container col-md-8 col-md-offset-2">
                 <span className="pull-left">Total <span id="howManyAlreadyDone">0</span>/<span id="numberOfQuestions">y</span> answers</span>
-                <span className="pull-right">Time spent <span id="time">0:00</span></span>
+                <TimeProgress />
             </div>
         )
     }

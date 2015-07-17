@@ -33,7 +33,7 @@ var QuizProgress = React.createClass({displayName: "QuizProgress",
         return (
             React.createElement("div", {className: "answersCounter container col-md-8 col-md-offset-2"}, 
                 React.createElement("span", {className: "pull-left"}, "Total ", React.createElement("span", {id: "howManyAlreadyDone"}, "0"), "/", React.createElement("span", {id: "numberOfQuestions"}, "y"), " answers"), 
-                React.createElement("span", {className: "pull-right"}, "Time spent ", React.createElement("span", {id: "time"}, "0:00"))
+                React.createElement(TimeProgress, null)
             )
         )
     }
