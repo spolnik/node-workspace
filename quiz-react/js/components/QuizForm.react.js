@@ -8,10 +8,10 @@ var QuizForm = React.createClass({
             <div className="quizForm">
                 <QuizError />
                 <div className="questionForm container well col-md-8 col-md-offset-2">
-                    <h2><span id="title">{this.props.currentQuestion.id + ') ' + this.props.currentQuestion.title}</span></h2>
-                    <h3><span id="subtitle">{this.props.currentQuestion.subtitle}</span></h3>
+                    <h2><span id="title">{this.props.question.id + ') ' + this.props.question.title}</span></h2>
+                    <h3><span id="subtitle">{this.props.question.subtitle}</span></h3>
 
-                    <QuestionForm question={this.props.currentQuestion}/>
+                    <QuestionForm question={this.props.question}/>
                 </div>
                 <QuizProgress count="10" />
             </div>
