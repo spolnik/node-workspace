@@ -2,8 +2,10 @@ var QuizSummary = React.createClass({displayName: "QuizSummary",
     render: function () {
         return (
             React.createElement("div", {className: "quizSummary container well col-md-8 col-md-offset-2"}, 
-                React.createElement(QuizResult, {result: "0", count: "10", percentResult: "0"}), 
-                React.createElement(QuizTimeSpent, {timeSpent: "0:01"}), 
+                React.createElement(QuizResult, {result: this.props.result, 
+                            count: this.props.count, 
+                            percentResult: this.props.percentResult}), 
+                React.createElement(QuizTimeSpent, {timeSpent: this.props.timeSpent}), 
                 React.createElement("input", {type: "button", className: "btn btn-info btn-lg pull-left disabled", value: "Check your answers"}), 
                 React.createElement("input", {type: "button", className: "btn btn-info btn-lg pull-right", onClick: "window.location.reload()", value: "Try Again"})
             )
