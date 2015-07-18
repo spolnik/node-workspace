@@ -3,7 +3,12 @@ var QuizForm = React.createClass({displayName: "QuizForm",
         return (
             React.createElement("div", {className: "quizForm"}, 
                 React.createElement(QuizError, null), 
-                React.createElement(QuestionForm, {questionId: "1", question: this.props.currentQuestion}), 
+                React.createElement("div", {className: "questionForm container well col-md-8 col-md-offset-2"}, 
+                    React.createElement("h2", null, React.createElement("span", {id: "title"}, this.props.currentQuestion.id + ') ' + this.props.currentQuestion.title)), 
+                    React.createElement("h3", null, React.createElement("span", {id: "subtitle"}, this.props.currentQuestion.subtitle)), 
+
+                    React.createElement(QuestionForm, {question: this.props.currentQuestion})
+                ), 
                 React.createElement(QuizProgress, {count: "10"})
             )
         );

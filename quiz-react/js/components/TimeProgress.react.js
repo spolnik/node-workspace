@@ -1,3 +1,5 @@
+var React = require('react');
+
 var SetIntervalMixin = {
     componentWillMount: function() {
         this.intervals = [];
@@ -35,3 +37,5 @@ var TimeProgress = React.createClass({
         );
     }
 });
+
+module.exports = TimeProgress;

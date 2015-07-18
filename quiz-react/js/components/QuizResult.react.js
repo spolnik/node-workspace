@@ -1,3 +1,5 @@
+var React = require('react');
+
 var QuizResult = React.createClass({
     render: function () {
         return (
@@ -9,3 +11,5 @@ var QuizResult = React.createClass({
         );
     }
 });
+
+module.exports = QuizResult;

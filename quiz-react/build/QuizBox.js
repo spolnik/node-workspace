@@ -2,6 +2,7 @@ var QuizBox = React.createClass({displayName: "QuizBox",
     getInitialState: function () {
         return {
             data: [{
+                id: 0,
                 title: "Title",
                 subtitle: "Subtitle",
                 answers: [
@@ -10,19 +11,27 @@ var QuizBox = React.createClass({displayName: "QuizBox",
                 ]
             }],
             count: 10,
-            currentQuestionId: 0
+            currentId: 0,
+            result: 0,
+            savedAnswers: []
         };
     },
     currentQuestion: function () {
-        return this.state.data[this.state.currentQuestionId];
+        return this.state.data[this.state.currentId];
     },
-    componentWillMount: function () {
+    componentDidMount: function () {
         $.ajax({
             url: this.props.url,
             dataType: 'json',
             cache: true,
             success: function (data) {
-                this.setState({data: _.shuffle(data)});
+                this.setState({
+                    data: _.take(_.shuffle(data),this.state.count).map(
+                        function (item, id) {
+                            return $.extend(item, {id: id+1})
+                        }
+                    )
+                });
             }.bind(this),
             error: function (xhr, status, err) {
                 console.error(this.props.url, status, err.toString());
@@ -33,7 +42,10 @@ var QuizBox = React.createClass({displayName: "QuizBox",
         return (
             React.createElement("div", {className: "quizBox"}, 
                 React.createElement(QuizForm, {currentQuestion: this.currentQuestion()}), 
-                React.createElement(QuizSummary, {result: "0", count: "10", percentResult: "0", timeSpent: "0:01"})
+                React.createElement(QuizSummary, {result: this.state.result, 
+                             count: this.state.count, 
+                             percentResult: this.state.result / this.state.count * 100, 
+                             timeSpent: "0:01"})
             )
         );
     }

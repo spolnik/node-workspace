@@ -1,3 +1,6 @@
+var React = require('react');
+var QuizResult = require('./QuizResult.react');
+
 var QuizSummary = React.createClass({
     render: function () {
         return (
@@ -23,3 +26,5 @@ var QuizTimeSpent = React.createClass({
         );
     }
 });
+
+module.exports = QuizSummary;

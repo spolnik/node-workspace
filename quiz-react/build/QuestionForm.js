@@ -1,17 +1,18 @@
 var QuestionForm = React.createClass({displayName: "QuestionForm",
+    handleSubmit: function(e) {
+        e.preventDefault();
+
+        //TODO: implement next / finish button action
+        //TODO: implement error show/hide logic
+    },
     render: function () {
         return (
-            React.createElement("div", {className: "questionForm container well col-md-8 col-md-offset-2"}, 
-                React.createElement("h2", null, React.createElement("span", {id: "title"}, this.props.questionId + ') ' + this.props.question.title)), 
-                React.createElement("h3", null, React.createElement("span", {id: "subtitle"}, this.props.question.subtitle)), 
-
-                React.createElement("form", null, 
-                    React.createElement("div", {className: "form-group"}, 
-                        React.createElement(Answers, {answers: this.props.question.answers})
-                    ), 
-                    React.createElement("button", {type: "submit", className: "btn btn-info btn-lg pull-left", id: "btnNext"}, "Next"), 
-                    React.createElement("button", {type: "submit", className: "btn btn-info btn-lg pull-right disabled", id: "btnBack"}, "Back")
-                )
+            React.createElement("form", {onSubmit: this.handleSubmit}, 
+                React.createElement("div", {className: "form-group"}, 
+                    React.createElement(Answers, {answers: this.props.question.answers})
+                ), 
+                React.createElement("button", {type: "submit", className: "btn btn-info btn-lg pull-left", id: "btnNext"}, "Next"), 
+                React.createElement("button", {type: "button", className: "btn btn-info btn-lg pull-right disabled", id: "btnBack"}, "Back")
             )
         );
     }

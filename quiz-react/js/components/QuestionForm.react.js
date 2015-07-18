@@ -1,18 +1,21 @@
+var React = require('react');
+
 var QuestionForm = React.createClass({
+    handleSubmit: function(e) {
+        e.preventDefault();
+
+        //TODO: implement next / finish button action
+        //TODO: implement error show/hide logic
+    },
     render: function () {
         return (
-            <div className="questionForm container well col-md-8 col-md-offset-2">
-                <h2><span id="title">{this.props.questionId + ') ' + this.props.question.title}</span></h2>
-                <h3><span id="subtitle">{this.props.question.subtitle}</span></h3>
-
-                <form>
-                    <div className="form-group">
-                        <Answers answers={this.props.question.answers} />
-                    </div>
-                    <button type="submit" className="btn btn-info btn-lg pull-left" id="btnNext">Next</button>
-                    <button type="submit" className="btn btn-info btn-lg pull-right disabled" id="btnBack">Back</button>
-                </form>
-            </div>
+            <form onSubmit={this.handleSubmit}>
+                <div className="form-group">
+                    <Answers answers={this.props.question.answers} />
+                </div>
+                <button type="submit" className="btn btn-info btn-lg pull-left" id="btnNext">Next</button>
+                <button type="button" className="btn btn-info btn-lg pull-right disabled" id="btnBack">Back</button>
+            </form>
         );
     }
 });
@@ -39,3 +42,5 @@ var Answers = React.createClass({
         );
     }
 });
+
+module.exports = QuestionForm;

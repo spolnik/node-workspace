@@ -1,9 +1,18 @@
+var React = require('react');
+var QuestionForm = require('./QuestionForm.react');
+var TimeProgress = require('./TimeProgress.react');
+
 var QuizForm = React.createClass({
     render: function () {
         return (
             <div className="quizForm">
                 <QuizError />
-                <QuestionForm questionId="1" question={this.props.currentQuestion}/>
+                <div className="questionForm container well col-md-8 col-md-offset-2">
+                    <h2><span id="title">{this.props.currentQuestion.id + ') ' + this.props.currentQuestion.title}</span></h2>
+                    <h3><span id="subtitle">{this.props.currentQuestion.subtitle}</span></h3>
+
+                    <QuestionForm question={this.props.currentQuestion}/>
+                </div>
                 <QuizProgress count="10" />
             </div>
         );
@@ -32,3 +41,5 @@ var QuizProgress = React.createClass({
         )
     }
 });
+
+module.exports = QuizForm;
