@@ -1,11 +1,10 @@
-torch = { price: 123.2 }
+torch = price: 123.2
 umbrella = {}
 
-priceOrDefault = (price) ->
-  if price? then price
-  else 0.0
+priceOrDefault = (item) ->
+  item.price || 0.0
 
 combineCost = (first, second) ->
-  priceOrDefault(first.price) + priceOrDefault(second.price)
+  priceOrDefault(first) + priceOrDefault(second)
 
 console.log combineCost torch, umbrella

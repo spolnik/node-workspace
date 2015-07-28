@@ -1,14 +1,15 @@
-houseRoast = null
+houseRoast = 'Yirgacheffe'
 
 hasMilk = (style) ->
-  switch style
-    when "latte", "cappuccino"
+  switch style.toLowerCase()
+    when "latte", "cappuccino", 'mocha'
         yes
     else
         no
 
 makeCoffee = (requestedStyle) ->
   style = requestedStyle || 'Espresso'
+  console.log houseRoast
   if houseRoast?
     "#{houseRoast} #{style}"
   else
@@ -21,7 +22,10 @@ barista = (style) ->
     coffee = makeCoffee style
     "Enjoy your #{coffee}!"
 
-console.log barista 'latte'
+order = document.querySelector '#order'
+request = document.querySelector '#request'
+response = document.querySelector '#response'
 
-houseRoast = 'Noir'
-console.log barista 'black'
+order.onsubmit = ->
+  response.innerHTML = barista(request.value)
+  false
