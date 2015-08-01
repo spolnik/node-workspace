@@ -17,13 +17,14 @@ class TemperatureConverter
 
   convert: (typeOfConversion, temperature) ->
 
+    removeLeadingMinusFromZero = (input) ->
+      if input is "-0.00" then "0.00" else input
+
     switch typeOfConversion
       when '1'
-        @fahrenheitToCentigrade(temperature).toFixed(2) + @centigradeSymbol()
+        "#{@fahrenheitToCentigrade(temperature).toFixed 2} #{@centigradeSymbol()}"
       when '2'
-        result = @centigradeToFahrenheit(temperature).toFixed 2
-        result = if result == "-0.00" then "0.00" else result
-        result + @fahrenheitSymbol()
+        "#{removeLeadingMinusFromZero @centigradeToFahrenheit(temperature).toFixed 2} #{@fahrenheitSymbol()}"
       else
         throw 'Invalid type of conversion: ' + typeOfConversion
 
@@ -34,8 +35,10 @@ class TemperatureConverter
   centigradeToFahrenheit: (temperature) ->
     9 / 5 * temperature + 32
 
-  fahrenheitSymbol: () ->
-    " °F"
+  fahrenheitSymbol: ->
+    "°F"
 
-  centigradeSymbol: () ->
-    " °C"
+  centigradeSymbol: ->
+    "°C"
+
+window.TemperatureConverter = TemperatureConverter

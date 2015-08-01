@@ -19,14 +19,19 @@
     function TemperatureConverter() {}
 
     TemperatureConverter.prototype.convert = function(typeOfConversion, temperature) {
-      var result;
+      var removeLeadingMinusFromZero;
+      removeLeadingMinusFromZero = function(input) {
+        if (input === "-0.00") {
+          return "0.00";
+        } else {
+          return input;
+        }
+      };
       switch (typeOfConversion) {
         case '1':
-          return this.fahrenheitToCentigrade(temperature).toFixed(2) + this.centigradeSymbol();
+          return (this.fahrenheitToCentigrade(temperature).toFixed(2)) + " " + (this.centigradeSymbol());
         case '2':
-          result = this.centigradeToFahrenheit(temperature).toFixed(2);
-          result = result === "-0.00" ? "0.00" : result;
-          return result + this.fahrenheitSymbol();
+          return (removeLeadingMinusFromZero(this.centigradeToFahrenheit(temperature).toFixed(2))) + " " + (this.fahrenheitSymbol());
         default:
           throw 'Invalid type of conversion: ' + typeOfConversion;
       }
@@ -41,16 +46,18 @@
     };
 
     TemperatureConverter.prototype.fahrenheitSymbol = function() {
-      return " °F";
+      return "°F";
     };
 
     TemperatureConverter.prototype.centigradeSymbol = function() {
-      return " °C";
+      return "°C";
     };
 
     return TemperatureConverter;
 
   })();
+
+  window.TemperatureConverter = TemperatureConverter;
 
 }).call(this);
 

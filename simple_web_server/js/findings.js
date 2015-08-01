@@ -23,6 +23,8 @@
     return wordCount;
   };
 
+  window.countWord = countWord;
+
   search = function() {
     var $text, input, word, wordCount;
     $text = $('#text');

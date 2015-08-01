@@ -17,6 +17,7 @@ countWord = (word, input) ->
 
   wordCount
 
+window.countWord = countWord
 
 search = ->
   $text = $('#text')
