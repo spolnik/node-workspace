@@ -8,7 +8,8 @@ exports.start = function (route, handle) {
     function onRequest (request, response) {
         const pathname = url.parse(request.url).pathname;
         log.info(request.url);
-        route(handle, pathname, response);
+
+        route(handle, pathname, response, request);
     }
 
     http.createServer(onRequest).listen(8888);
