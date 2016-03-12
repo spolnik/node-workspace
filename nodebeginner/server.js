@@ -1,15 +1,14 @@
-exports.start = function () {
+exports.start = function (route, handle) {
     'use strict';
 
     const http = require('http');
     const log = require('log4js').getLogger('server');
-    const os = require('os');
+    const url = require('url');
 
-    function onRequest (req, res) {
-        log.info(req.url);
-        res.writeHead(200, {"Content-Type": 'text/plain'});
-        res.write('Hello World' + os.EOL);
-        res.end();
+    function onRequest (request, response) {
+        const pathname = url.parse(request.url).pathname;
+        log.info(request.url);
+        route(handle, pathname, response);
     }
 
     http.createServer(onRequest).listen(8888);
