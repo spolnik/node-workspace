@@ -43,3 +43,5 @@ let fibMax21 = new Fib(21);
 for (let num of fibMax21) {
     console.log(num);
 }
+
+console.log(`<div>${JSON.stringify(fibMax21)}</div>`);
