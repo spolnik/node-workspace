@@ -2,23 +2,14 @@
   "name": "address-book",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
+  "main": "app.js",
   "scripts": {
     "prepublish": "typings install",
-    "watch": "webpack --watch",
+    "addressBook": "node app.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "",
   "license": "ISC",
-  "bin": {
-    "contacts": "index.js"
-  },
-  "devDependencies": {
-    "source-map-support": "^0.4.0",
-    "ts-loader": "^0.8.1",
-    "typings": "^0.7.11",
-    "webpack": "^1.12.14"
-  },
   "dependencies": {
     "async": "^2.0.0-rc.2"
   }
