@@ -21,10 +21,6 @@ class Fib implements Iterator<number> {
             done: true
         }
     }
-
-    [Symbol.iterator](): Iterator<number> {
-        return this;
-    }
 }
 
 let fib = new Fib();
@@ -37,10 +33,10 @@ console.log(fib.next());
 console.log(fib.next());
 
 let fibMax50 = new Fib(50);
-console.log(Array.from(fibMax50));
+console.log(JSON.stringify(fibMax50));
 
 let fibMax21 = new Fib(21);
-for (let num of fibMax21) {
+for (let num of <any>fibMax21) {
     console.log(num);
 }
 
