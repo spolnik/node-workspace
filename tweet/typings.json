@@ -1,0 +1,8 @@
+{
+  "name": "tweet",
+  "version": false,
+  "dependencies": {},
+  "ambientDependencies": {
+    "jquery": "registry:dt/jquery#1.10.0+20160316155526"
+  }
+}

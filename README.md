@@ -1,6 +1,6 @@
 # node-workspace
-Node &amp;&amp; JavaScript workspace
+Node, TypeScript and JavaScript workspace
 
-This is set of node/javascript applications presenting different parts of language/platform/libraries.
+This is set of javascript related applications presenting different parts of language/platform/libraries.
 
 To see ready ones, check the page: http://spolnik.github.io/node-workspace/
