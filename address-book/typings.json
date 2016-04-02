@@ -1,0 +1,8 @@
+{
+  "name": "address-book",
+  "version": false,
+  "dependencies": {},
+  "ambientDevDependencies": {
+    "node": "registry:dt/node#4.0.0+20160330064709"
+  }
+}
