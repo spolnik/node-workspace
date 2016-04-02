@@ -4,5 +4,8 @@
   "dependencies": {},
   "ambientDevDependencies": {
     "node": "registry:dt/node#4.0.0+20160330064709"
+  },
+  "ambientDependencies": {
+    "async": "registry:dt/async#1.4.2+20160316155526"
   }
 }
