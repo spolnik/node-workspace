@@ -16,6 +16,7 @@
   "devDependencies": {
     "source-map-support": "^0.4.0",
     "ts-loader": "^0.8.1",
+    "typings": "^0.7.11",
     "webpack": "^1.12.14"
   }
 }

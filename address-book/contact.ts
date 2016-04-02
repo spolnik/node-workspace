@@ -3,11 +3,11 @@ import {Jsonfile} from "./jsonfile";
 
 export interface Contact {
     name: string,
-    number: number
+    number: string
 }
 
 export class ContactFactory {
-    createContact(name: string, number: number): Contact {
+    createContact(name: string, number: string): Contact {
         return {
             name: name,
             number: number
@@ -61,6 +61,3 @@ export class JsonfileContactRepository implements ContactRepository {
         this.jsonFile.writeFile(jsonPath, contacts, done, null);
     }
 }
-
-
-
