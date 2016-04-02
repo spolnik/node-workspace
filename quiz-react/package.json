@@ -1,0 +1,43 @@
+{
+  "name": "quiz-react",
+  "version": "1.0.0",
+  "description": "Quiz App written with React.js & FLUX",
+  "main": "js/app.js",
+  "scripts": {
+    "start": "watchify -o js/bundle.js -v -d js/app.js",
+    "build": "browserify . -t [envify --NODE_ENV production] | uglifyjs -cm > js/bundle.min.js",
+    "test": "jest"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/spolnik/node-workspace/tree/master/quiz-react"
+  },
+  "keywords": [
+    "Quiz",
+    "react",
+    "flux"
+  ],
+  "author": "Jacek Spólnik",
+  "license": "MIT",
+  "devDependencies": {
+    "browserify": "^11.0.0",
+    "envify": "^3.4.0",
+    "reactify": "^1.1.1",
+    "uglify-js": "^2.4.23",
+    "watchify": "^3.3.0"
+  },
+  "dependencies": {
+    "flux": "^2.0.3",
+    "jquery": "^2.1.4",
+    "keymirror": "^0.1.1",
+    "lodash": "^3.10.0",
+    "object-assign": "^3.0.0",
+    "react": "^0.13.3"
+  },
+  "browserify": {
+    "transform": [
+      "reactify",
+      "envify"
+    ]
+  }
+}

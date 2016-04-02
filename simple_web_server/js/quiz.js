@@ -2,12 +2,10 @@
 
 var main = function () {
 
-    var NUMBER_OF_QUESTIONS = 10;
+    var NUMBER_OF_QUESTIONS = 10,
+        snapshot = new Date();
 
-    var quiz = new Quiz(data, NUMBER_OF_QUESTIONS);
     $('#numberOfQuestions').text(NUMBER_OF_QUESTIONS);
-
-    var snapshot = new Date();
 
     var timerHandler = setInterval(function () {
 
@@ -22,70 +20,75 @@ var main = function () {
         );
     }, 1000);
 
-    var applyQuestion = function (question, id) {
-        $('#title').text(id + ') ' + question.title);
-        $('#subtitle').text(question.subtitle);
+    $.getJSON('js/data.json', function (data) {
 
-        var setAnswerText = function (id, answer) {
-            var $answer = $(id);
+        var applyQuestion = function (question, id) {
+            $('#title').text(id + ') ' + question.title);
+            $('#subtitle').text(question.subtitle);
 
-            if (answer) {
-                $answer.get(0).nextSibling.textContent = answer.description;
-                $answer.parent().show();
-            } else {
-                $answer.parent().hide();
-            }
+            var setAnswerText = function (id, answer) {
+                var $answer = $(id);
+
+                if (answer) {
+                    $answer.get(0).nextSibling.textContent = answer.description;
+                    $answer.parent().show();
+                } else {
+                    $answer.parent().hide();
+                }
+            };
+
+            setAnswerText('#answer1', question.answers[0]);
+            setAnswerText('#answer2', question.answers[1]);
+            setAnswerText('#answer3', question.answers[2]);
+            setAnswerText('#answer4', question.answers[3]);
         };
 
-        setAnswerText('#answer1', question.answers[0]);
-        setAnswerText('#answer2', question.answers[1]);
-        setAnswerText('#answer3', question.answers[2]);
-        setAnswerText('#answer4', question.answers[3]);
-    };
+        var quiz = new Quiz(data, NUMBER_OF_QUESTIONS);
+        applyQuestion(quiz.currentQuestion(), quiz.currentQuestionId());
 
-    applyQuestion(quiz.currentQuestion(), quiz.currentQuestionId());
+        var nextOrFinish = function (event) {
+            event.preventDefault();
 
-    $('button').click(function (event) {
-        event.preventDefault();
+            var $error = $('#error');
+            $error.hide('fast');
 
-        var $error = $('#error');
-        $error.hide('fast');
+            var $input = $('input:checked');
 
-        var $input = $('input:checked');
-
-        var answer = $input.val();
-        if (answer === undefined) {
-            $error.show('fast');
-            return;
-        }
-
-
-        $input.prop('checked', false);
-
-        quiz.checkAnswer(answer);
-
-        var $well = $('.well');
-
-        $well.fadeOut('fast').promise().done( function () {
-            quiz.moveToNextQuestion();
-            $('#howManyAlreadyDone').text(quiz.index);
-            applyQuestion(quiz.currentQuestion(), quiz.currentQuestionId());
-            $well.fadeIn('fast');
-
-            if (quiz.count === quiz.currentQuestionId()) {
-                $('#btnNext').text('Finish');
-            } else if (quiz.count < quiz.currentQuestionId()) {
-                clearInterval(timerHandler);
-
-                $('#result').text(quiz.allPoints());
-                $('#count').text(quiz.count);
-                $('#resultPercent').text(quiz.allPoints() / quiz.count * 100.00);
-                $('#timeSpent').text($('#time').text());
-
-                $('#quizForm').hide('slow');
-                $('#summary').show('slow');
+            var answer = $input.val();
+            if (answer === undefined) {
+                $error.show('fast');
+                return;
             }
-        });
+
+            $input.prop('checked', false);
+
+            quiz.checkAnswer(answer);
+
+            var $well = $('.well');
+
+            $well.fadeOut('fast').promise().done( function () {
+                quiz.moveToNextQuestion();
+                $('#howManyAlreadyDone').text(quiz.index);
+                applyQuestion(quiz.currentQuestion(), quiz.currentQuestionId());
+                $well.fadeIn('fast');
+
+                if (quiz.count === quiz.currentQuestionId()) {
+                    $('#btnNext').text('Finish');
+                } else if (quiz.count < quiz.currentQuestionId()) {
+                    clearInterval(timerHandler);
+
+                    $('#result').text(quiz.allPoints());
+                    $('#count').text(quiz.count);
+                    $('#resultPercent').text(quiz.allPoints() / quiz.count * 100.00);
+                    $('#timeSpent').text($('#time').text());
+
+                    $('#quizForm').hide('slow');
+                    $('#summary').show('slow');
+                }
+            });
+        };
+
+        $('button').click(nextOrFinish);
     });
 };
 
