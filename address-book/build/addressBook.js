@@ -48,7 +48,8 @@ require("source-map-support").install();
 	"use strict";
 	var command_1 = __webpack_require__(1);
 	var contact_1 = __webpack_require__(2);
-	var command = new command_1.Command(new contact_1.JsonfileContactRepository(), new contact_1.ContactFactory());
+	var jsonfile_1 = __webpack_require__(6);
+	var command = new command_1.Command(new contact_1.JsonfileContactRepository(new jsonfile_1.Jsonfile()), new contact_1.ContactFactory());
 	function handleError(err) {
 	    if (err) {
 	        console.log(err);
@@ -135,7 +136,6 @@ require("source-map-support").install();
 
 	"use strict";
 	var util_1 = __webpack_require__(3);
-	var jsonfile_1 = __webpack_require__(6);
 	var ContactFactory = (function () {
 	    function ContactFactory() {
 	    }
@@ -149,8 +149,8 @@ require("source-map-support").install();
 	}());
 	exports.ContactFactory = ContactFactory;
 	var JsonfileContactRepository = (function () {
-	    function JsonfileContactRepository() {
-	        this.jsonfile = new jsonfile_1.Jsonfile();
+	    function JsonfileContactRepository(jsonFile) {
+	        this.jsonFile = jsonFile;
 	    }
 	    JsonfileContactRepository.prototype.saveContact = function (contact, done) {
 	        var that = this;
@@ -176,11 +176,11 @@ require("source-map-support").install();
 	    };
 	    JsonfileContactRepository.prototype.loadContacts = function (done) {
 	        var jsonPath = util_1.Util.getDataPath();
-	        this.jsonfile.readFile(jsonPath, done, null);
+	        this.jsonFile.readFile(jsonPath, done, null);
 	    };
 	    JsonfileContactRepository.prototype.saveContacts = function (contacts, done) {
 	        var jsonPath = util_1.Util.getDataPath();
-	        this.jsonfile.writeFile(jsonPath, contacts, done, null);
+	        this.jsonFile.writeFile(jsonPath, contacts, done, null);
 	    };
 	    return JsonfileContactRepository;
 	}());

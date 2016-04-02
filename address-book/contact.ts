@@ -22,7 +22,7 @@ export interface ContactRepository {
 
 export class JsonfileContactRepository implements ContactRepository {
 
-    private jsonfile = new Jsonfile();
+    constructor(private jsonFile: Jsonfile) {}
 
     saveContact (contact, done) {
         var that = this;
@@ -52,13 +52,13 @@ export class JsonfileContactRepository implements ContactRepository {
 
     private loadContacts (done) {
         let jsonPath = Util.getDataPath();
-        this.jsonfile.readFile(jsonPath, done, null);
+        this.jsonFile.readFile(jsonPath, done, null);
     }
 
     private saveContacts (contacts: Contact[], done) {
         let jsonPath = Util.getDataPath();
 
-        this.jsonfile.writeFile(jsonPath, contacts, done, null);
+        this.jsonFile.writeFile(jsonPath, contacts, done, null);
     }
 }
 
