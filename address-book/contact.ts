@@ -1,7 +1,6 @@
-import {Util} from "./util";
-import {Jsonfile} from "./jsonfile";
 import * as Q from "q";
 import Promise = Q.Promise;
+import NeDBDataStore = require("nedb");
 
 export interface Contact {
     name: string;
@@ -18,56 +17,36 @@ export class ContactFactory {
 }
 
 export interface ContactRepository {
-    saveContact(contact: Contact): Promise<{}>;
-    findContacts(name: string): Promise<Contact[]>;
+    save(contact: Contact): Promise<{}>;
+    findAll(name: string): Promise<Contact[]>;
 }
 
-export class JsonfileContactRepository implements ContactRepository {
+export class NeDBContactRepository implements ContactRepository {
 
-    constructor(private jsonFile: Jsonfile) {}
+    constructor(private db: NeDBDataStore) {}
 
-    saveContact(contact: Contact) {
-
+    save(contact: Contact): Q.Promise<{}> {
         return Q.Promise((resolve, reject) => {
-            this.loadContacts().then((contacts: Contact[]) => {
-                contacts.push(contact);
-                this.saveContacts(contacts).then(resolve).catch(reject);
-            }).catch(reject);
+            this.db.insert(contact, (err, newDocs) => {
+                if (err) {
+                    reject(err);
+                } else {
+                    resolve(newDocs);
+                }
+            });
         });
     }
 
-    findContacts(name: string) {
-
+    findAll(name: string): Q.Promise<Contact[]> {
         return Q.Promise<Contact[]>((resolve, reject) => {
-            this.loadContacts().then((contacts: Contact[]) => {
-                let byName = function (contact: Contact) {
-                    return contact.name === name;
-                };
-
-                let result = contacts.filter(byName);
-                resolve(result);
-            }).catch(reject);
-        });
-    }
-
-    private loadContacts() {
-        return Q.Promise((resolve, reject) => {
-            let jsonPath = Util.getDataPath();
-
-            this.jsonFile.readFile(
-                jsonPath
-            ).then(resolve).catch(reject);
-        });
-    }
-
-    private saveContacts (contacts: Contact[]) {
-
-        return Q.Promise((resolve, reject) => {
-            let jsonPath = Util.getDataPath();
-
-            this.jsonFile.writeFile(
-                jsonPath, contacts
-            ).then(resolve).catch(reject);
+            this.db.find<Contact>({name: name}, (err: any, docs: Contact[]) => {
+                if (err) {
+                    reject(err);
+                } else {
+                    resolve(docs);
+                }
+            });
         });
     }
 }
+

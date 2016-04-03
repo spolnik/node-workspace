@@ -20,12 +20,11 @@
   "author": "Jacek Spolnik",
   "license": "MIT",
   "dependencies": {
-    "async": "^2.0.0-rc.2",
+    "nedb": "^1.8.0",
     "q": "^1.4.1"
   },
   "devDependencies": {
     "chai": "^3.5.0",
-    "mocha": "^2.4.5",
-    "sinon": "^1.17.3"
+    "mocha": "^2.4.5"
   }
 }

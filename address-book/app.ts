@@ -1,6 +1,6 @@
 import {CommandFactory} from "./command";
-import {ContactFactory, JsonfileContactRepository} from "./contact";
-import {Jsonfile} from "./jsonfile";
+import {ContactFactory, NeDBContactRepository} from "./contact";
+import NeDBDataStore = require("nedb");
 
 function getOperation() {
     return process.argv[2];
@@ -11,7 +11,7 @@ function getOperationData() {
 }
 
 let commandFactory = new CommandFactory(
-    new JsonfileContactRepository(new Jsonfile()),
+    new NeDBContactRepository(new NeDBDataStore({filename: "addressBook.db", autoload: true})),
     ContactFactory.createContact
 );
 

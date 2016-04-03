@@ -35,7 +35,7 @@ class AddCommand implements Command<{}> {
             let phone = AddCommand.parseNumber(data);
 
             let contact = this.createContact(name, phone);
-            this.contactRepository.saveContact(
+            this.contactRepository.save(
                 contact
             ).then(resolve).catch(reject);
         });
@@ -57,7 +57,7 @@ class FindCommand implements Command<Contact[]> {
 
     execute(name: string): Q.Promise<Contact[]> {
         return Q.Promise<Contact[]>((resolve, reject) => {
-            this.contactRepository.findContacts(
+            this.contactRepository.findAll(
                 name
             ).then((data) => {
                 data.forEach(function (contact: Contact) {
