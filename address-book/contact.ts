@@ -7,7 +7,7 @@ export interface Contact {
 }
 
 export class ContactFactory {
-    createContact(name: string, number: string): Contact {
+    static createContact(name: string, number: string): Contact {
         return {
             name: name,
             number: number
@@ -16,32 +16,34 @@ export class ContactFactory {
 }
 
 export interface ContactRepository {
-    saveContact(contact: Contact, done);
-    findContacts (name: string, done);
+    saveContact(contact: Contact, done: Function): void;
+    findContacts(name: string, done: Function): void;
 }
 
 export class JsonfileContactRepository implements ContactRepository {
 
     constructor(private jsonFile: Jsonfile) {}
 
-    saveContact (contact, done) {
+    saveContact (contact: Contact, done: (err: NodeJS.ErrnoException) => void) {
         var that = this;
 
-        this.loadContacts(function (err, contacts: Contact[]) {
-            if (err) { return done(err); }
+        this.loadContacts(function (err: NodeJS.ErrnoException, contacts: Contact[]) {
+            if (err) {
+                return done(err);
+            }
             contacts.push(contact);
             that.saveContacts(contacts, done);
         });
     }
 
-    findContacts (name: string, done) {
+    findContacts (name: string, done: Function) {
 
-        this.loadContacts(function (err, contacts) {
+        this.loadContacts(function (err: string, contacts: Contact[]) {
             if (err) {
                 return done(err);
             }
 
-            var byName = function (contact) {
+            var byName = function (contact: Contact) {
                 return contact.name === name;
             };
 
@@ -50,12 +52,12 @@ export class JsonfileContactRepository implements ContactRepository {
         });
     }
 
-    private loadContacts (done) {
+    private loadContacts (done: Function) {
         let jsonPath = Util.getDataPath();
         this.jsonFile.readFile(jsonPath, done, null);
     }
 
-    private saveContacts (contacts: Contact[], done) {
+    private saveContacts (contacts: Contact[], done: (err: NodeJS.ErrnoException) => void) {
         let jsonPath = Util.getDataPath();
 
         this.jsonFile.writeFile(jsonPath, contacts, done, null);

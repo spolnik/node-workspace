@@ -1,15 +1,16 @@
 {
   "name": "address-book",
   "version": "1.0.0",
-  "description": "",
-  "main": "app.js",
+  "description": "Simple Address Book app",
+  "main": "build/app.js",
   "scripts": {
     "prepublish": "typings install",
-    "addressBook": "node app.js",
+    "watch": "tsc --watch",
+    "start": "node build/app.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "author": "",
-  "license": "ISC",
+  "author": "Jacek Spolnik",
+  "license": "MIT",
   "dependencies": {
     "async": "^2.0.0-rc.2"
   }

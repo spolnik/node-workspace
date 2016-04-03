@@ -1,10 +1,14 @@
-import {Contact, ContactFactory, ContactRepository} from "./contact";
+import {Contact, ContactRepository} from "./contact";
 
 export class Command {
 
-    constructor(private contactRepository: ContactRepository, private contactFactory: ContactFactory) {}
+    constructor(
+        private contactRepository: ContactRepository,
+        private createContact: (name: string, number: string) => Contact) {
 
-    add(done) {
+    }
+
+    add(done: Function) {
         if (this.getOperation() !== 'add') {
             return;
         }
@@ -14,18 +18,18 @@ export class Command {
         let name = this.parseName(data);
         let number = this.parseNumber(data);
 
-        let contact = this.contactFactory.createContact(name, number);
+        let contact = this.createContact(name, number);
         this.contactRepository.saveContact(contact, done);
     }
 
-    find(done) {
+    find(done: Function) {
         if (this.getOperation() !== 'find') {
             return;
         }
 
         let data = this.getOperationData();
 
-        this.contactRepository.findContacts(data, function (err, data) {
+        this.contactRepository.findContacts(data, function (err: string, data: Contact[]) {
             if (err) {
                 return done(err);
             }
@@ -46,18 +50,18 @@ export class Command {
         return process.argv[3];
     }
 
-    private parseName (input): string {
+    private parseName (input: string): string {
         return input.split(',')[0].trim();
     }
 
-    private parseNumber (input) {
+    private parseNumber (input: string) {
         return input.split(',')[1].trim();
     }
 
-    executeCurrentOperation(done) {
+    executeCurrentOperation(done: Function) {
         let operation = this.getOperation();
 
-        let command;
+        let command: Function;
         switch (operation) {
             case "add":
                 command = this.add;
@@ -66,7 +70,7 @@ export class Command {
                 command = this.find;
                 break;
             default:
-                command = function (done) {
+                command = function (done: Function) {
                     done('Invalid command!')
                 };
         }

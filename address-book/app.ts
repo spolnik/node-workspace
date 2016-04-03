@@ -5,7 +5,7 @@ import * as async from "async";
 
 let command = new Command(
     new JsonfileContactRepository(new Jsonfile()),
-    new ContactFactory()
+    ContactFactory.createContact
 );
 
 async.series([
@@ -15,6 +15,6 @@ function(err) {
     if (err) {
         console.error(err);
     } else {
-        console.log('OK! The command ran successfully!');
+        console.log('done');
     }
 });
