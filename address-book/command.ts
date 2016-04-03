@@ -1,80 +1,80 @@
 import {Contact, ContactRepository} from "./contact";
+import * as Q from "q";
 
-export class Command {
+export interface Command<T> {
+    execute(data: string): Q.Promise<T>;
+}
 
+export class CommandFactory {
     constructor(
         private contactRepository: ContactRepository,
         private createContact: (name: string, phone: string) => Contact) {
-
     }
 
-    add(done: Function) {
-        if (this.getOperation() !== "add") {
-            return;
+    createCommand(name: string): Command<{}> {
+        switch (name) {
+            case "add":
+                return new AddCommand(this.contactRepository, this.createContact);
+            case "find":
+                return new FindCommand(this.contactRepository);
+            default:
+                return new DefaultCommand();
         }
+    }
+}
 
-        let data = this.getOperationData();
-
-        let name = this.parseName(data);
-        let phone = this.parseNumber(data);
-
-        let contact = this.createContact(name, phone);
-        this.contactRepository.saveContact(
-            contact
-        ).then((data) => done(null, data)).catch((err) => done(err));
+class AddCommand implements Command<{}> {
+    constructor(
+        private contactRepository: ContactRepository,
+        private createContact: (name: string, phone: string) => Contact) {
     }
 
-    find(done: Function) {
-        if (this.getOperation() !== "find") {
-            return;
-        }
+    execute(data: string): Q.Promise<{}> {
+        return Q.Promise((resolve, reject) => {
+            let name = AddCommand.parseName(data);
+            let phone = AddCommand.parseNumber(data);
 
-        let name = this.getOperationData();
-
-        this.contactRepository.findContacts(
-            name
-        ).then((data) => {
-            data.forEach(function (contact: Contact) {
-                console.log(contact.name, contact.phone);
-            });
-
-            done(null, data);
-        }).catch((err) => done(err));
+            let contact = this.createContact(name, phone);
+            this.contactRepository.saveContact(
+                contact
+            ).then(resolve).catch(reject);
+        });
     }
 
-    private getOperation() {
-        return process.argv[2];
-    }
-
-    private getOperationData() {
-        return process.argv[3];
-    }
-
-    private parseName (input: string): string {
+    private static parseName (input: string): string {
         return input.split(",")[0].trim();
     }
 
-    private parseNumber (input: string) {
+    private static parseNumber (input: string) {
         return input.split(",")[1].trim();
     }
+}
 
-    executeCurrentOperation(done: Function) {
-        let operation = this.getOperation();
+class FindCommand implements Command<Contact[]> {
+    constructor(
+        private contactRepository: ContactRepository) {
+    }
 
-        let command: Function;
-        switch (operation) {
-            case "add":
-                command = this.add;
-                break;
-            case "find":
-                command = this.find;
-                break;
-            default:
-                command = function (done: Function) {
-                    done("Invalid command!");
-                };
-        }
+    execute(name: string): Q.Promise<Contact[]> {
+        return Q.Promise<Contact[]>((resolve, reject) => {
+            this.contactRepository.findContacts(
+                name
+            ).then((data) => {
+                data.forEach(function (contact: Contact) {
+                    console.log(contact.name, contact.phone);
+                });
 
-        command.bind(this)(done);
+                resolve(data);
+            }).catch(reject);
+        });
+    }
+}
+
+class DefaultCommand implements Command<{}> {
+
+    execute(data: string): Q.Promise<{}> {
+        return Q.Promise((resolve, reject) => {
+            reject("Invalid command!");
+        });
     }
 }

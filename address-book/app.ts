@@ -1,20 +1,25 @@
-import {Command} from "./command";
+import {CommandFactory} from "./command";
 import {ContactFactory, JsonfileContactRepository} from "./contact";
 import {Jsonfile} from "./jsonfile";
-import * as async from "async";
 
-let command = new Command(
+function getOperation() {
+    return process.argv[2];
+}
+
+function getOperationData() {
+    return process.argv[3];
+}
+
+let commandFactory = new CommandFactory(
     new JsonfileContactRepository(new Jsonfile()),
     ContactFactory.createContact
 );
 
-async.series([
-    (callback) => command.executeCurrentOperation(callback)
-],
-function(err) {
-    if (err) {
-        console.error(err);
-    } else {
-        console.log("done");
-    }
-});
+let command = commandFactory.createCommand(getOperation());
+
+command.execute(
+    getOperationData()
+).then(
+    () => console.log("done")
+).catch(console.error);
+
