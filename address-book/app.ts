@@ -1,5 +1,5 @@
-import {Command} from './command';
-import {ContactFactory, JsonfileContactRepository} from './contact';
+import {Command} from "./command";
+import {ContactFactory, JsonfileContactRepository} from "./contact";
 import {Jsonfile} from "./jsonfile";
 import * as async from "async";
 
@@ -15,6 +15,6 @@ function(err) {
     if (err) {
         console.error(err);
     } else {
-        console.log('done');
+        console.log("done");
     }
 });

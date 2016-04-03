@@ -4,14 +4,28 @@
   "description": "Simple Address Book app",
   "main": "build/app.js",
   "scripts": {
-    "prepublish": "typings install",
-    "watch": "tsc --watch",
-    "start": "node build/app.js",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "addressBook": "node build/app.js",
+    "addressBook:add": "npm run addressBook add",
+    "addressBook:find": "npm run addressBook find",
+
+    "tslint": "tslint *.ts",
+    "build": "npm run clean && tsc",
+    "build:watch": "tsc --watch",
+    "test": "mocha build/test/",
+    "test:watch": "npm test -- -w",
+    "clean": "rm -r build/*",
+
+    "pretest": "npm run build",
+    "prebuild": "npm run tslint",
+    "pretslint": "typings install"
   },
   "author": "Jacek Spolnik",
   "license": "MIT",
   "dependencies": {
     "async": "^2.0.0-rc.2"
+  },
+  "devDependencies": {
+    "chai": "^3.5.0",
+    "mocha": "^2.4.5"
   }
 }

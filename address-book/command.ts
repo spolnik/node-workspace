@@ -4,26 +4,26 @@ export class Command {
 
     constructor(
         private contactRepository: ContactRepository,
-        private createContact: (name: string, number: string) => Contact) {
+        private createContact: (name: string, phone: string) => Contact) {
 
     }
 
     add(done: Function) {
-        if (this.getOperation() !== 'add') {
+        if (this.getOperation() !== "add") {
             return;
         }
 
         let data = this.getOperationData();
 
         let name = this.parseName(data);
-        let number = this.parseNumber(data);
+        let phone = this.parseNumber(data);
 
-        let contact = this.createContact(name, number);
+        let contact = this.createContact(name, phone);
         this.contactRepository.saveContact(contact, done);
     }
 
     find(done: Function) {
-        if (this.getOperation() !== 'find') {
+        if (this.getOperation() !== "find") {
             return;
         }
 
@@ -35,7 +35,7 @@ export class Command {
             }
 
             data.forEach(function (contact: Contact) {
-                console.log(contact.name, contact.number);
+                console.log(contact.name, contact.phone);
             });
 
             done(null, data);
@@ -51,11 +51,11 @@ export class Command {
     }
 
     private parseName (input: string): string {
-        return input.split(',')[0].trim();
+        return input.split(",")[0].trim();
     }
 
     private parseNumber (input: string) {
-        return input.split(',')[1].trim();
+        return input.split(",")[1].trim();
     }
 
     executeCurrentOperation(done: Function) {
@@ -71,7 +71,7 @@ export class Command {
                 break;
             default:
                 command = function (done: Function) {
-                    done('Invalid command!')
+                    done("Invalid command!");
                 };
         }
 

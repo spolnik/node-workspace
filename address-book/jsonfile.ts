@@ -1,9 +1,9 @@
 import * as fs from "fs";
 
 interface Options {
-    spaces?: string,
-    replacer?: any,
-    reviver?: any
+    spaces?: string;
+    replacer?: any;
+    reviver?: any;
 }
 
 export class Jsonfile {
@@ -17,31 +17,31 @@ export class Jsonfile {
 
             let obj: T;
             try {
-                obj = JSON.parse(<any>data, options ? options.reviver : null)
+                obj = JSON.parse(<any>data, options ? options.reviver : null);
             } catch (err2) {
                 err2.message = `${file}: ${err2.message}`;
-                return callback(err2)
+                return callback(err2);
             }
 
-            callback(null, obj)
+            callback(null, obj);
         });
     }
 
     writeFile<T>(file: string, obj: T, callback: (err: NodeJS.ErrnoException) => void, options: Options = {}) {
 
-        let spaces = typeof options === 'object' && options !== null
-            ? 'spaces' in options
+        let spaces = typeof options === "object" && options !== null
+            ? "spaces" in options
                 ? options.spaces : this.spaces
                 : this.spaces;
 
-        let str = '';
+        let str = "";
         try {
-            str = `${JSON.stringify(obj, options ? options.replacer : null, spaces)}\n`
+            str = `${JSON.stringify(obj, options ? options.replacer : null, spaces)}\n`;
         } catch (err) {
             if (callback)
-                return callback(err)
+                return callback(err);
         }
 
-        fs.writeFile(file, str, options, callback)
+        fs.writeFile(file, str, options, callback);
     }
 }

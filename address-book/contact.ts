@@ -2,16 +2,16 @@ import {Util} from "./util";
 import {Jsonfile} from "./jsonfile";
 
 export interface Contact {
-    name: string,
-    number: string
+    name: string;
+    phone: string;
 }
 
 export class ContactFactory {
-    static createContact(name: string, number: string): Contact {
+    static createContact(name: string, phone: string): Contact {
         return {
             name: name,
-            number: number
-        }
+            phone: phone
+        };
     }
 }
 
@@ -25,7 +25,7 @@ export class JsonfileContactRepository implements ContactRepository {
     constructor(private jsonFile: Jsonfile) {}
 
     saveContact (contact: Contact, done: (err: NodeJS.ErrnoException) => void) {
-        var that = this;
+        let that = this;
 
         this.loadContacts(function (err: NodeJS.ErrnoException, contacts: Contact[]) {
             if (err) {
@@ -43,7 +43,7 @@ export class JsonfileContactRepository implements ContactRepository {
                 return done(err);
             }
 
-            var byName = function (contact: Contact) {
+            let byName = function (contact: Contact) {
                 return contact.name === name;
             };
 

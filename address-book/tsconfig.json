@@ -3,7 +3,8 @@
     "module": "commonjs",
     "noImplicitAny": true,
     "outDir": "./build",
-    "sourceMap": true
+    "sourceMap": true,
+    "pretty": true
   },
   "exclude": [
     "node_modules",
