@@ -1,6 +1,7 @@
 import {Util} from "./util";
 import {Jsonfile} from "./jsonfile";
 import * as Q from "q";
+import Promise = Q.Promise;
 
 export interface Contact {
     name: string;
@@ -17,61 +18,56 @@ export class ContactFactory {
 }
 
 export interface ContactRepository {
-    saveContact(contact: Contact, done: Function): void;
-    findContacts(name: string, done: Function): void;
+    saveContact(contact: Contact): Promise<{}>;
+    findContacts(name: string): Promise<Contact[]>;
 }
 
 export class JsonfileContactRepository implements ContactRepository {
 
     constructor(private jsonFile: Jsonfile) {}
 
-    saveContact (contact: Contact, done: (err: NodeJS.ErrnoException) => void) {
-        // let that = this;
+    saveContact(contact: Contact) {
 
-        this.loadContacts().then((contacts: Contact[]) => {
-            contacts.push(contact);
-            this.saveContacts(contacts, done);
-        }).catch((err) => {
-            done(err);
+        return Q.Promise((resolve, reject) => {
+            this.loadContacts().then((contacts: Contact[]) => {
+                contacts.push(contact);
+                this.saveContacts(contacts).then(resolve).catch(reject);
+            }).catch(reject);
         });
-
-        // this.loadContacts(function (err: NodeJS.ErrnoException, contacts: Contact[]) {
-        //     if (err) {
-        //         return done(err);
-        //     }
-        //     contacts.push(contact);
-        //     that.saveContacts(contacts, done);
-        // });
     }
 
-    findContacts (name: string, done: Function) {
+    findContacts(name: string) {
 
-        this.loadContacts().then((contacts: Contact[]) => {
-            let byName = function (contact: Contact) {
-                return contact.name === name;
-            };
+        return Q.Promise<Contact[]>((resolve, reject) => {
+            this.loadContacts().then((contacts: Contact[]) => {
+                let byName = function (contact: Contact) {
+                    return contact.name === name;
+                };
 
-            let result = contacts.filter(byName);
-            done(null, result);
-        }).catch((err) => {
-            done(err);
+                let result = contacts.filter(byName);
+                resolve(result);
+            }).catch(reject);
         });
     }
 
     private loadContacts() {
         return Q.Promise((resolve, reject) => {
             let jsonPath = Util.getDataPath();
-            this.jsonFile.readFile(jsonPath).then(resolve).catch(reject);
+
+            this.jsonFile.readFile(
+                jsonPath
+            ).then(resolve).catch(reject);
         });
     }
 
-    private saveContacts (contacts: Contact[], done: (err: NodeJS.ErrnoException) => void) {
-        let jsonPath = Util.getDataPath();
+    private saveContacts (contacts: Contact[]) {
 
-        this.jsonFile.writeFile(jsonPath, contacts).then(function () {
-            done(null);
-        }).catch(function (err) {
-            done(err);
+        return Q.Promise((resolve, reject) => {
+            let jsonPath = Util.getDataPath();
+
+            this.jsonFile.writeFile(
+                jsonPath, contacts
+            ).then(resolve).catch(reject);
         });
     }
 }

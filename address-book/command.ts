@@ -19,7 +19,9 @@ export class Command {
         let phone = this.parseNumber(data);
 
         let contact = this.createContact(name, phone);
-        this.contactRepository.saveContact(contact, done);
+        this.contactRepository.saveContact(
+            contact
+        ).then((data) => done(null, data)).catch((err) => done(err));
     }
 
     find(done: Function) {
@@ -27,19 +29,17 @@ export class Command {
             return;
         }
 
-        let data = this.getOperationData();
+        let name = this.getOperationData();
 
-        this.contactRepository.findContacts(data, function (err: string, data: Contact[]) {
-            if (err) {
-                return done(err);
-            }
-
+        this.contactRepository.findContacts(
+            name
+        ).then((data) => {
             data.forEach(function (contact: Contact) {
                 console.log(contact.name, contact.phone);
             });
 
             done(null, data);
-        });
+        }).catch((err) => done(err));
     }
 
     private getOperation() {

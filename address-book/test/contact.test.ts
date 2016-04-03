@@ -12,27 +12,21 @@ describe("Contact", () => {
     let repository = new JsonfileContactRepository(new Jsonfile());
 
     function saveContact(callback: Function) {
-        repository.saveContact(contact, function (err) {
-            if (err) {
-                fail(err);
-            } else {
-                callback();
-            }
-        });
+        repository.saveContact(
+            contact
+        ).then((data) => callback()).catch(fail);
     }
 
     function findContact(callback: Function) {
-        repository.findContacts("John Smith", function(err: string, data: Contact[]) {
-            if (err) {
-                fail(err);
-            } else {
-                let result = data.filter(
-                    (x: Contact) => x.name === contact.name && x.phone === contact.phone
-                ).shift();
-                expect(result).to.eql(contact);
-                callback();
-            }
-        });
+        repository.findContacts(
+            "John Smith"
+        ).then((data: Contact[]) => {
+            let result = data.filter(
+                (x: Contact) => x.name === contact.name && x.phone === contact.phone
+            ).shift();
+            expect(result).to.eql(contact);
+            callback();
+        }).catch(fail);
     }
 
     describe("#saveContact", () => {
