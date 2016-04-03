@@ -54,12 +54,12 @@ export class JsonfileContactRepository implements ContactRepository {
 
     private loadContacts (done: Function) {
         let jsonPath = Util.getDataPath();
-        this.jsonFile.readFile(jsonPath, done, null);
+        this.jsonFile.readFile(jsonPath, done);
     }
 
     private saveContacts (contacts: Contact[], done: (err: NodeJS.ErrnoException) => void) {
         let jsonPath = Util.getDataPath();
 
-        this.jsonFile.writeFile(jsonPath, contacts, done, null);
+        this.jsonFile.writeFile(jsonPath, contacts, done);
     }
 }
