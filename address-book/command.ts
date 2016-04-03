@@ -23,14 +23,14 @@ export class CommandFactory {
     }
 }
 
-class AddCommand implements Command<{}> {
+class AddCommand implements Command<Contact> {
     constructor(
         private contactRepository: ContactRepository,
         private createContact: (name: string, phone: string) => Contact) {
     }
 
-    execute(data: string): Q.Promise<{}> {
-        return Q.Promise((resolve, reject) => {
+    execute(data: string): Q.Promise<Contact> {
+        return Q.Promise<Contact>((resolve, reject) => {
             let name = AddCommand.parseName(data);
             let phone = AddCommand.parseNumber(data);
 
@@ -57,23 +57,15 @@ class FindCommand implements Command<Contact[]> {
 
     execute(name: string): Q.Promise<Contact[]> {
         return Q.Promise<Contact[]>((resolve, reject) => {
-            this.contactRepository.findAll(
-                name
-            ).then((data) => {
-                data.forEach(function (contact: Contact) {
-                    console.log(contact.name, contact.phone);
-                });
-
-                resolve(data);
-            }).catch(reject);
+            this.contactRepository.findAll(name).then(resolve).catch(reject);
         });
     }
 }
 
-class DefaultCommand implements Command<{}> {
+class DefaultCommand implements Command<string> {
 
-    execute(data: string): Q.Promise<{}> {
-        return Q.Promise((resolve, reject) => {
+    execute(data: string): Q.Promise<string> {
+        return Q.Promise<string>((resolve, reject) => {
             reject("Invalid command!");
         });
     }

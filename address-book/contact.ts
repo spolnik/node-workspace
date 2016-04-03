@@ -17,7 +17,7 @@ export class ContactFactory {
 }
 
 export interface ContactRepository {
-    save(contact: Contact): Promise<{}>;
+    save(contact: Contact): Promise<Contact>;
     findAll(name: string): Promise<Contact[]>;
 }
 
@@ -25,8 +25,8 @@ export class NeDBContactRepository implements ContactRepository {
 
     constructor(private db: NeDBDataStore) {}
 
-    save(contact: Contact): Q.Promise<{}> {
-        return Q.Promise((resolve, reject) => {
+    save(contact: Contact): Q.Promise<Contact> {
+        return Q.Promise<Contact>((resolve, reject) => {
             this.db.insert(contact, (err, newDocs) => {
                 if (err) {
                     reject(err);

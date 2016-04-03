@@ -1,25 +1,39 @@
 import {CommandFactory} from "./command";
-import {ContactFactory, NeDBContactRepository} from "./contact";
+import {ContactFactory, NeDBContactRepository, ContactRepository} from "./contact";
 import NeDBDataStore = require("nedb");
 
-function getOperation() {
-    return process.argv[2];
+class AddressBookApp {
+    private operation: string;
+    private operationData: string;
+    private contactRepository: ContactRepository;
+
+    constructor() {
+        this.readCommandLineParameters();
+
+        this.contactRepository = new NeDBContactRepository(
+            new NeDBDataStore({filename: "addressBook.db", autoload: true})
+        );
+    }
+
+    run() {
+        let commandFactory = new CommandFactory(
+            this.contactRepository,
+            ContactFactory.createContact
+        );
+
+        let command = commandFactory.createCommand(
+            this.operation
+        );
+
+        command.execute(
+            this.operationData
+        ).then(console.log).catch(console.error);
+    }
+
+    private readCommandLineParameters() {
+        this.operation = process.argv[2];
+        this.operationData = process.argv[3];
+    }
 }
 
-function getOperationData() {
-    return process.argv[3];
-}
-
-let commandFactory = new CommandFactory(
-    new NeDBContactRepository(new NeDBDataStore({filename: "addressBook.db", autoload: true})),
-    ContactFactory.createContact
-);
-
-let command = commandFactory.createCommand(getOperation());
-
-command.execute(
-    getOperationData()
-).then(
-    () => console.log("done")
-).catch(console.error);
-
+new AddressBookApp().run();
