@@ -8,7 +8,7 @@
     "node": "registry:dt/node#4.0.0+20160330064709"
   },
   "ambientDependencies": {
-    "nedb": "registry:dt/nedb#0.0.0+20160317120654",
-    "q": "registry:dt/q#0.0.0+20160323171452"
+    "async": "registry:dt/async#1.4.2+20160316155526",
+    "nedb": "registry:dt/nedb#0.0.0+20160317120654"
   }
 }

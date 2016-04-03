@@ -1,8 +1,7 @@
 import {Contact, ContactRepository} from "./contact";
-import * as Q from "q";
 
 export interface Command<T> {
-    execute(data: string): Q.Promise<T>;
+    execute(data: string): Promise<T>;
 }
 
 export class CommandFactory {
@@ -29,8 +28,8 @@ class AddCommand implements Command<Contact> {
         private createContact: (name: string, phone: string) => Contact) {
     }
 
-    execute(data: string): Q.Promise<Contact> {
-        return Q.Promise<Contact>((resolve, reject) => {
+    execute(data: string): Promise<Contact> {
+        return new Promise<Contact>((resolve, reject) => {
             let name = AddCommand.parseName(data);
             let phone = AddCommand.parseNumber(data);
 
@@ -55,8 +54,8 @@ class FindCommand implements Command<Contact[]> {
         private contactRepository: ContactRepository) {
     }
 
-    execute(name: string): Q.Promise<Contact[]> {
-        return Q.Promise<Contact[]>((resolve, reject) => {
+    execute(name: string): Promise<Contact[]> {
+        return new Promise<Contact[]>((resolve, reject) => {
             this.contactRepository.findAll(name).then(resolve).catch(reject);
         });
     }
@@ -64,8 +63,8 @@ class FindCommand implements Command<Contact[]> {
 
 class DefaultCommand implements Command<string> {
 
-    execute(data: string): Q.Promise<string> {
-        return Q.Promise<string>((resolve, reject) => {
+    execute(data: string): Promise<string> {
+        return new Promise<string>((resolve, reject) => {
             reject("Invalid command!");
         });
     }

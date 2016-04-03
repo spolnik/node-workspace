@@ -20,8 +20,8 @@
   "author": "Jacek Spolnik",
   "license": "MIT",
   "dependencies": {
-    "nedb": "^1.8.0",
-    "q": "^1.4.1"
+    "async": "^2.0.0-rc.2",
+    "nedb": "^1.8.0"
   },
   "devDependencies": {
     "chai": "^3.5.0",

@@ -1,5 +1,3 @@
-import * as Q from "q";
-import Promise = Q.Promise;
 import NeDBDataStore = require("nedb");
 
 export interface Contact {
@@ -25,8 +23,8 @@ export class NeDBContactRepository implements ContactRepository {
 
     constructor(private db: NeDBDataStore) {}
 
-    save(contact: Contact): Q.Promise<Contact> {
-        return Q.Promise<Contact>((resolve, reject) => {
+    save(contact: Contact): Promise<Contact> {
+        return new Promise<Contact>((resolve, reject) => {
             this.db.insert(contact, (err, newDocs) => {
                 if (err) {
                     reject(err);
@@ -37,8 +35,8 @@ export class NeDBContactRepository implements ContactRepository {
         });
     }
 
-    findAll(name: string): Q.Promise<Contact[]> {
-        return Q.Promise<Contact[]>((resolve, reject) => {
+    findAll(name: string): Promise<Contact[]> {
+        return new Promise<Contact[]>((resolve, reject) => {
             this.db.find<Contact>({name: name}, (err: any, docs: Contact[]) => {
                 if (err) {
                     reject(err);
