@@ -9,11 +9,11 @@ export class MarketController extends Controller implements IController {
     private nasdaqModel: IModel;
     private nyseModel: IModel;
 
-    constructor(metiator: IMediator) {
-        super(metiator);
-        this.marketView = new MarketView(metiator);
-        this.nasdaqModel = new NasdaqModel(metiator);
-        this.nyseModel = new NyseModel(metiator);
+    constructor(mediator: IMediator) {
+        super(mediator);
+        this.marketView = new MarketView(mediator);
+        this.nasdaqModel = new NasdaqModel(mediator);
+        this.nyseModel = new NyseModel(mediator);
     }
 
     // initialize views/ models and strat listening to controller actions

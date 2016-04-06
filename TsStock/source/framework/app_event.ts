@@ -1,4 +1,5 @@
 import {IAppEvent} from "./interfaces";
+
 export class AppEvent implements IAppEvent {
     public guid: string;
     public topic: string;

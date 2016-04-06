@@ -1,134 +1,139 @@
-import { EventEmitter } from "./event_emitter";
+import {EventEmitter} from "./event_emitter";
 import {IView, IMediator} from "./interfaces";
 
 function ViewSettings(templateUrl: string, container: string) {
-  return function(target: any) {
-    // save a reference to the original constructor
-    let original = target;
+    return function (target: any) {
+        // save a reference to the original constructor
+        let original = target;
 
-    // a utility function to generate instances of a class
-    function construct(constructor, args) {
-      let c: any = function () {
-        return constructor.apply(this, args);
-      };
+        // a utility function to generate instances of a class
+        function construct(constructor, args) {
+            let c: any = function () {
+                return constructor.apply(this, args);
+            };
 
-      c.prototype = constructor.prototype;
-      let instance =  new c();
-      instance._container = container;
-      instance._templateUrl = templateUrl;
-      return instance;
-    }
+            c.prototype = constructor.prototype;
+            let instance = new c();
+            instance._container = container;
+            instance._templateUrl = templateUrl;
+            return instance;
+        }
 
-    // the new constructor behaviour
-    let f: any = function (...args) {
-      return construct(original, args);
+        // the new constructor behaviour
+        let f: any = function (...args) {
+            return construct(original, args);
+        };
+
+        // copy prototype so intanceof operator still works
+        f.prototype = original.prototype;
+
+        // return new constructor (will override original)
+        return f;
     };
-
-    // copy prototype so intanceof operator still works
-    f.prototype = original.prototype;
-
-    // return new constructor (will override original)
-    return f;
-  };
 }
 
 class View extends EventEmitter implements IView {
 
-  // the values of container and templateUrl must be set using the ViewSettings decorator
-  protected container: string;
-  private templateUrl: string;
+    // the values of container and templateUrl must be set using the ViewSettings decorator
+    protected container: string;
+    private templateUrl: string;
 
-  private templateDelegate: HandlebarsTemplateDelegate;
+    private templateDelegate: HandlebarsTemplateDelegate;
 
-  constructor(metiator: IMediator) {
-    super(metiator);
-  }
+    constructor(metiator: IMediator) {
+        super(metiator);
+    }
 
-  // must be implemented by derived classes
-  public initialize() {
-    throw new Error("View.prototype.initialize() is abstract and must implemented.");
-  }
+    // must be implemented by derived classes
+    public initialize() {
+        throw new Error("View.prototype.initialize() is abstract and must implemented.");
+    }
 
-  // must be implemented by derived classes
-  public dispose() {
-    throw new Error("View.prototype.dispose() is abstract and must implemented.");
-  }
+    // must be implemented by derived classes
+    public dispose() {
+        throw new Error("View.prototype.dispose() is abstract and must implemented.");
+    }
 
-  // must be implemented by derived classes
-  protected bindDomEvents(model: any) {
-    throw new Error("View.prototype.bindDomEvents() is abstract and must implemented.");
-  }
+    // must be implemented by derived classes
+    protected bindDomEvents(model: any) {
+        throw new Error("View.prototype.bindDomEvents() is abstract and must implemented.");
+    }
 
-  // must be implemented by derived classes
-  protected unbindDomEvents() {
-    throw new Error("View.prototype.unbindDomEvents() is abstract and must implemented.");
-  }
+    // must be implemented by derived classes
+    protected unbindDomEvents() {
+        throw new Error("View.prototype.unbindDomEvents() is abstract and must implemented.");
+    }
 
-  // asynchroniusly loads a template
-  private loadTemplateAsync() {
-    return Q.Promise((resolve: (r) => {}, reject: (e) => {}) => {
-      $.ajax({
-        method: "GET",
-        url: this.templateUrl,
-        dataType: "text",
-        success: (response) => {
-          resolve(response);
-        },
-        error: (...args: any[]) => {
-          reject(args);
-        }
-      });
-    });
-  }
+    // asynchroniusly loads a template
+    private loadTemplateAsync() {
+        return Q.Promise((resolve: (r) => {}, reject: (e) => {}) => {
+            $.ajax({
+                method: "GET",
+                url: this.templateUrl,
+                dataType: "text",
+                success: (response) => {
+                    resolve(response);
+                },
+                error: (...args: any[]) => {
+                    reject(args);
+                }
+            });
+        });
+    }
 
-  // asynchroniusly compile a template
-  private compileTemplateAsync(source: string) {
-    return Q.Promise((resolve: (r) => {}, reject: (e) => {}) => {
-      try {
-        let template = Handlebars.compile(source);
-        resolve(template);
-      }
-      catch (e) {
-        reject(e);
-      }
-    });
-  }
-  // asynchroniusly loads and compile a template if not done already
-  private getTemplateAsync() {
-    return Q.Promise((resolve: (r) => {}, reject: (e) => {}) => {
-      if (this.templateDelegate === undefined || this.templateDelegate === null) {
-        this.loadTemplateAsync()
-            .then((source) => {
-              return this.compileTemplateAsync(source);
-            })
-            .then((templateDelegate) => {
-              this.templateDelegate = templateDelegate;
-              resolve(this.templateDelegate);
-            })
-            .catch((e) => { reject(e); });
-      }
-      else {
-        resolve(this.templateDelegate);
-      }
-    });
-  }
+    // asynchroniusly compile a template
+    private compileTemplateAsync(source: string) {
+        return Q.Promise((resolve: (r) => {}, reject: (e) => {}) => {
+            try {
+                let template = Handlebars.compile(source);
+                resolve(template);
+            }
+            catch (e) {
+                reject(e);
+            }
+        });
+    }
 
-  // asynchroniusly renders the view
-  protected renderAsync(model) {
-    return Q.Promise((resolve: (r) => {}, reject: (e) => {}) => {
-      this.getTemplateAsync()
-          .then((templateDelegate) => {
-            // generate html and append to the DOM
-            let html = this.templateDelegate(model);
-            $(this.container).html(html);
+    // asynchroniusly loads and compile a template if not done already
+    private getTemplateAsync() {
+        return Q.Promise((resolve: (r) => {}, reject: (e) => {}) => {
+            if (this.templateDelegate === undefined || this.templateDelegate === null) {
+                this.loadTemplateAsync()
+                    .then((source) => {
+                        return this.compileTemplateAsync(source);
+                    })
+                    .then((templateDelegate) => {
+                        this.templateDelegate = templateDelegate;
+                        resolve(this.templateDelegate);
+                    })
+                    .catch((e) => {
+                        reject(e);
+                    });
+            }
+            else {
+                resolve(this.templateDelegate);
+            }
+        });
+    }
 
-            // pass model to resolve so it can be used by
-            // subviews and DOM event initializer
-            resolve(model);
-          })
-          .catch((e) => { reject(e); });
-    });
-  }
+    // asynchroniusly renders the view
+    protected renderAsync(model) {
+        return Q.Promise((resolve: (r) => {}, reject: (e) => {}) => {
+            this.getTemplateAsync()
+                .then((templateDelegate) => {
+                    // generate html and append to the DOM
+                    let html = this.templateDelegate(model);
+                    $(this.container).html(html);
+
+                    // pass model to resolve so it can be used by
+                    // subviews and DOM event initializer
+                    resolve(model);
+                })
+                .catch((e) => {
+                    reject(e);
+                });
+        });
+    }
 }
 
-export { View, ViewSettings };
+export {View, ViewSettings};

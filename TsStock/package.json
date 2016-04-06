@@ -9,7 +9,8 @@
   "scripts": {
     "test": "gulp test",
     "tslint": "tslint source/**/*.ts && tslint test/**/*.ts",
-    "typings:install": "typings install"
+    "typings:install": "typings install",
+    "watch": "webpack --watch"
   },
   "author": "Jacek Spolnik",
   "license": "MIT",
@@ -38,6 +39,7 @@
     "mocha": "^2.2.5",
     "run-sequence": "^1.1.2",
     "sinon": "^1.16.1",
+    "ts-loader": "^0.8.1",
     "vinyl-buffer": "^1.0.0",
     "vinyl-source-stream": "^1.1.0"
   }

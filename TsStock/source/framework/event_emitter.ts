@@ -1,26 +1,36 @@
 import {IAppEvent, IEventEmitter, IMediator} from "./interfaces";
+import {AppEvent} from "./app_event";
+
 export class EventEmitter implements IEventEmitter {
-   protected mediator: IMediator;
-   protected events: Array<IAppEvent>;
+    protected mediator: IMediator;
+    protected events: IAppEvent[];
 
-   constructor(mediator: IMediator) {
-     this.mediator = mediator;
-   }
+    constructor(mediator: IMediator) {
+        this.mediator = mediator;
+    }
 
-   public triggerEvent(event: IAppEvent) {
-     this.mediator.publish(event);
-   }
+    public triggerEvent(event: IAppEvent) {
+        this.mediator.publish(event);
+    }
 
-   public subscribeToEvents(events: Array<IAppEvent>) {
-     this.events = events;
-     for (let i = 0; i < this.events.length; i++) {
-       this.mediator.subscribe(this.events[i]);
-     }
-   }
+    public triggerError(message: string) {
+        this.triggerEvent(new AppEvent(
+            "app.error",
+            message,
+            null));
+    }
 
-   public unsubscribeToEvents() {
-     for (let i = 0; i < this.events.length; i++) {
-       this.mediator.unsubscribe(this.events[i]);
-     }
-   }
- }
+    public subscribeToEvents(events: IAppEvent[]) {
+        this.events = events;
+
+        for (let event of this.events) {
+            this.mediator.subscribe(event);
+        }
+    }
+
+    public unsubscribeToEvents() {
+        for (let event of this.events) {
+            this.mediator.unsubscribe(event);
+        }
+    }
+}
