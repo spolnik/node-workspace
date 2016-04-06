@@ -1,14 +1,27 @@
 import {Model, AppEvent, ModelSettings} from "../../framework/framework";
 import {IMediator, IModel} from "../../framework/interfaces";
 
+interface MarkitResponseElement {
+    Currency: string;
+    TimeStamp: string;
+    Symbol: string;
+    Type: string;
+    DataSeries: { open: { values: number[] }, close: { values: number[] }, high: { values: number[] }, low: { values: number[] }};
+}
+
+interface MarkitResponse {
+    Positions: number[];
+    Dates: string[];
+    Elements: MarkitResponseElement[];
+}
+
 @ModelSettings("http://dev.markitondemand.com/Api/v2/InteractiveChart/jsonp")
 export class ChartModel extends Model implements IModel {
 
-    constructor(metiator: IMediator) {
-        super(metiator);
+    constructor(mediator: IMediator) {
+        super(mediator);
     }
 
-    // listen to model events
     public initialize() {
         this.subscribeToEvents([
             new AppEvent("app.model.chart.change", null, (e, args) => {
@@ -17,14 +30,13 @@ export class ChartModel extends Model implements IModel {
         ]);
     }
 
-    // dispose model events
     public dispose() {
         this.unsubscribeToEvents();
     }
 
     private onChange(args): void {
 
-        function formatModel(symbol, data) {
+        function formatModel(symbol, data: MarkitResponse) {
             // more info at http://dev.markitondemand.com/
             // and http://www.highcharts.com/demo/line-time-series
             let chartData = {
@@ -68,12 +80,12 @@ export class ChartModel extends Model implements IModel {
         let queryString = "parameters=" + encodeURIComponent(JSON.stringify(p));
 
         this.getAsync("jsonp", queryString)
-            .then((data) => {
+            .then((data: MarkitResponse) => {
 
                 // format data
                 let chartData = formatModel(args, data);
 
-                // pass controll to the market view
+                // pass control to the market view
                 this.triggerEvent(new AppEvent("app.view.chart.render", chartData, null));
             })
             .catch((e) => {

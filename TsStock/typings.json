@@ -11,6 +11,7 @@
     "jquery.datatables": "registry:dt/jquery.datatables#1.9.4+20160317120654",
     "mocha": "registry:dt/mocha#2.2.5+20160317120654",
     "q": "registry:dt/q#0.0.0+20160323171452",
+    "react": "registry:dt/react#0.14.0+20160319053454",
     "sinon": "registry:dt/sinon#1.16.0+20160317120654"
   }
 }

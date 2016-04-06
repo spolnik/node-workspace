@@ -1,11 +1,12 @@
 import {Model, AppEvent, ModelSettings} from "../../framework/framework";
 import {IModel, IMediator} from "../../framework/interfaces";
+import {Stocks} from "./stocks";
 
 @ModelSettings("./data/nyse.json")
-class NyseModel extends Model implements IModel {
+export class NyseModel extends Model implements IModel {
 
-    constructor(metiator: IMediator) {
-        super(metiator);
+    constructor(mediator: IMediator) {
+        super(mediator);
     }
 
     // listen to model events
@@ -27,9 +28,9 @@ class NyseModel extends Model implements IModel {
             .then((data) => {
 
                 // format data
-                let stocks = {items: data, market: "NYSE"};
+                let stocks = new Stocks(data, "NYSE");
 
-                // pass controll to the market view
+                // pass control to the market view
                 this.triggerEvent(new AppEvent("app.view.market.render", stocks, null));
             })
             .catch((e) => {
@@ -38,5 +39,3 @@ class NyseModel extends Model implements IModel {
             });
     }
 }
-
-export {NyseModel};

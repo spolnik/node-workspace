@@ -4,8 +4,8 @@ import {IMediator, IView} from "../../framework/interfaces";
 @ViewSettings("./source/app/templates/symbol.hbs", "#outlet")
 class SymbolView extends View implements IView {
 
-    constructor(metiator: IMediator) {
-        super(metiator);
+    constructor(mediator: IMediator) {
+        super(mediator);
     }
 
     initialize(): void {
@@ -25,19 +25,19 @@ class SymbolView extends View implements IView {
         ]);
     }
 
-    public dispose(): void {
+    dispose(): void {
         this.unbindDomEvents();
         this.unsubscribeToEvents();
     }
 
     // initializes DOM events
-    protected bindDomEvents(model: any) {
+    bindDomEvents(model: any) {
         let scope = $(this.container);
         // set DOM events here
     }
 
     // disposes DOM events
-    protected unbindDomEvents() {
+    unbindDomEvents() {
         let scope = this.container;
         // kill DOM events here
     }

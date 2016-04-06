@@ -27,13 +27,13 @@ export class MarketView extends View implements IView {
     }
 
     // disposes app events and DOM events
-    public dispose(): void {
+    dispose(): void {
         this.unbindDomEvents();
         this.unsubscribeToEvents();
     }
 
     // initializes DOM events
-    protected bindDomEvents(model: any) {
+    bindDomEvents(model: any) {
         let scope = $(this.container);
         $(".getQuote").on("click", scope, (e) => {
             let symbol = $(e.currentTarget).data("symbol");
@@ -43,7 +43,7 @@ export class MarketView extends View implements IView {
     }
 
     // disposes DOM events
-    protected unbindDomEvents() {
+    unbindDomEvents() {
         let scope = this.container;
         $(".getQuote").off("click", scope);
         let table: DataTables.DataTable = $(scope).find("table").dataTable();

@@ -10285,18 +10285,6 @@
 	    function View(mediator) {
 	        _super.call(this, mediator);
 	    }
-	    View.prototype.initialize = function () {
-	        throw new Error("View.prototype.initialize() is abstract and must implemented.");
-	    };
-	    View.prototype.dispose = function () {
-	        throw new Error("View.prototype.dispose() is abstract and must implemented.");
-	    };
-	    View.prototype.bindDomEvents = function (model) {
-	        throw new Error("View.prototype.bindDomEvents() is abstract and must implemented.");
-	    };
-	    View.prototype.unbindDomEvents = function () {
-	        throw new Error("View.prototype.unbindDomEvents() is abstract and must implemented.");
-	    };
 	    View.prototype.loadTemplateAsync = function () {
 	        var _this = this;
 	        return Q.Promise(function (resolve, reject) {
@@ -17249,8 +17237,8 @@
 	var framework_1 = __webpack_require__(1);
 	var ChartModel = (function (_super) {
 	    __extends(ChartModel, _super);
-	    function ChartModel(metiator) {
-	        _super.call(this, metiator);
+	    function ChartModel(mediator) {
+	        _super.call(this, mediator);
 	    }
 	    ChartModel.prototype.initialize = function () {
 	        var _this = this;
@@ -17335,8 +17323,8 @@
 	var framework_1 = __webpack_require__(1);
 	var SymbolView = (function (_super) {
 	    __extends(SymbolView, _super);
-	    function SymbolView(metiator) {
-	        _super.call(this, metiator);
+	    function SymbolView(mediator) {
+	        _super.call(this, mediator);
 	    }
 	    SymbolView.prototype.initialize = function () {
 	        var _this = this;

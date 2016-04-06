@@ -8,7 +8,7 @@ module.exports = {
     },
     module: {
         loaders: [
-            { test: /\.tsx?$/, loader: 'ts-loader?additionalFiles[]=typings/main/ambient/jquery.datatables.index.d.ts' },
+            { test: /\.tsx?$/, loader: 'ts-loader' },
             { test: /\.hbs$/, loader: 'handlebars-loader' }
         ]
     },

@@ -21,7 +21,8 @@
     "handlebars": "^3.0.3",
     "highcharts": "0.0.9",
     "jquery": "^2.1.4",
-    "q": "^1.4.1"
+    "q": "^1.4.1",
+    "react": "^0.14.8"
   },
   "devDependencies": {
     "browser-sync": "^2.8.2",

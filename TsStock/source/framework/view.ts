@@ -35,7 +35,7 @@ export function ViewSettings(templateUrl: string, container: string) {
     };
 }
 
-export class View extends EventEmitter implements IView {
+export abstract class View extends EventEmitter implements IView {
 
     // the values of container and templateUrl must be set using the ViewSettings decorator
     protected container: string;
@@ -47,25 +47,11 @@ export class View extends EventEmitter implements IView {
         super(mediator);
     }
 
-    // must be implemented by derived classes
-    public initialize() {
-        throw new Error("View.prototype.initialize() is abstract and must implemented.");
-    }
+    abstract initialize();
+    abstract dispose();
+    abstract bindDomEvents(model: any);
 
-    // must be implemented by derived classes
-    public dispose() {
-        throw new Error("View.prototype.dispose() is abstract and must implemented.");
-    }
-
-    // must be implemented by derived classes
-    protected bindDomEvents(model: any) {
-        throw new Error("View.prototype.bindDomEvents() is abstract and must implemented.");
-    }
-
-    // must be implemented by derived classes
-    protected unbindDomEvents() {
-        throw new Error("View.prototype.unbindDomEvents() is abstract and must implemented.");
-    }
+    abstract unbindDomEvents();
 
     // asynchroniusly loads a template
     private loadTemplateAsync() {
