@@ -2,6 +2,7 @@ import {EventEmitter} from "./event_emitter";
 import {AppEvent} from "./app_event";
 import {Route} from "./route";
 import {IMediator, IRouter} from "./interfaces";
+import * as $ from "jquery";
 
 export class Router extends EventEmitter implements IRouter {
     private defaultController: string;

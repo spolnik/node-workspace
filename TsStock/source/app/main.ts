@@ -11,10 +11,7 @@ let appSettings: IAppSettings = {
         {controllerName: "market", controller: MarketController},
         {controllerName: "symbol", controller: SymbolController}
     ],
-    onErrorHandler: function (e: Object) {
-        alert("Sorry! there has been an error please check out the console for more info!");
-        console.log(e.toString());
-    }
+    onErrorHandler: (e: Object) => console.log(JSON.stringify(e))
 };
 
 let myApp = new App(appSettings);

@@ -1,5 +1,6 @@
 import {EventEmitter} from "./event_emitter";
 import * as $ from "jquery";
+import * as Q from "q";
 import {IMediator, IModel} from "./interfaces";
 
 export function ModelSettings(serviceUrl: string) {
@@ -9,46 +10,35 @@ export function ModelSettings(serviceUrl: string) {
 
         // a utility function to generate instances of a class
         function construct(constructor, args) {
-            let c: any = function () {
+            let ctor: any = function () {
                 return constructor.apply(this, args);
             };
-            c.prototype = constructor.prototype;
-            let instance = new c();
-            instance._serviceUrl = serviceUrl;
+            ctor.prototype = constructor.prototype;
+            let instance = new ctor();
+            instance.serviceUrl = serviceUrl;
             return instance;
         }
 
-        // the new constructor behaviour
-        let f: any = function (...args) {
+        let newConstructor: any = function (...args) {
             return construct(original, args);
         };
 
-        // copy prototype so intanceof operator still works
-        f.prototype = original.prototype;
-
-        // return new constructor (will override original)
-        return f;
+        newConstructor.prototype = original.prototype;
+        return newConstructor;
     };
 }
 
-export class Model extends EventEmitter implements IModel {
+export abstract class Model extends EventEmitter implements IModel {
 
     // the values of serviceUrl must be set using the ModelSettings decorator
     private serviceUrl: string;
 
-    constructor(metiator: IMediator) {
-        super(metiator);
+    constructor(mediator: IMediator) {
+        super(mediator);
     }
 
-    // must be implemented by derived classes
-    public initialize() {
-        throw new Error("Model.prototype.initialize() is abstract and must implemented.");
-    }
-
-    // must be implemented by derived classes
-    public dispose() {
-        throw new Error("Model.prototype.dispose() is abstract and must implemented.");
-    }
+    abstract initialize();
+    abstract dispose()
 
     protected requestAsync(method: string, dataType: string, data) {
         return Q.Promise((resolve: (r) => {}, reject: (e) => {}) => {

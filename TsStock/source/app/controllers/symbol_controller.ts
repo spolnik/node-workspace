@@ -19,21 +19,29 @@ export class SymbolController extends Controller implements IController {
         this.chartView = new ChartView(mediator);
     }
 
-    // initialize views/ models and strat listening to controller actions
     public initialize(): void {
 
-        // subscribe to controller action events
+        this.subscribeToControllerActionEvents();
+        this.initializeModels();
+        this.initializeViews();
+    }
+
+    private subscribeToControllerActionEvents() {
         this.subscribeToEvents([
             new AppEvent("app.controller.symbol.quote", null, (e, symbol: string) => {
                 this.quote(symbol);
             })
         ]);
+    }
 
-        // initialize view and models events
-        this.quoteModel.initialize();
-        this.chartModel.initialize();
+    private initializeViews() {
         this.symbolView.initialize();
         this.chartView.initialize();
+    }
+
+    private initializeModels() {
+        this.quoteModel.initialize();
+        this.chartModel.initialize();
     }
 
     // dispose views/models and stop listening to controller actions

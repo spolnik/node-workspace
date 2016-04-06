@@ -1,7 +1,10 @@
 import {EventEmitter} from "./event_emitter";
 import {IView, IMediator} from "./interfaces";
+import * as Q from "q";
+import * as $ from "jquery";
+import * as Handlebars from "handlebars";
 
-function ViewSettings(templateUrl: string, container: string) {
+export function ViewSettings(templateUrl: string, container: string) {
     return function (target: any) {
         // save a reference to the original constructor
         let original = target;
@@ -14,8 +17,8 @@ function ViewSettings(templateUrl: string, container: string) {
 
             c.prototype = constructor.prototype;
             let instance = new c();
-            instance._container = container;
-            instance._templateUrl = templateUrl;
+            instance.container = container;
+            instance.templateUrl = templateUrl;
             return instance;
         }
 
@@ -32,7 +35,7 @@ function ViewSettings(templateUrl: string, container: string) {
     };
 }
 
-class View extends EventEmitter implements IView {
+export class View extends EventEmitter implements IView {
 
     // the values of container and templateUrl must be set using the ViewSettings decorator
     protected container: string;
@@ -40,8 +43,8 @@ class View extends EventEmitter implements IView {
 
     private templateDelegate: HandlebarsTemplateDelegate;
 
-    constructor(metiator: IMediator) {
-        super(metiator);
+    constructor(mediator: IMediator) {
+        super(mediator);
     }
 
     // must be implemented by derived classes
@@ -67,7 +70,7 @@ class View extends EventEmitter implements IView {
     // asynchroniusly loads a template
     private loadTemplateAsync() {
         return Q.Promise((resolve: (r) => {}, reject: (e) => {}) => {
-            $.ajax({
+            $.ajax(<JQueryAjaxSettings>{
                 method: "GET",
                 url: this.templateUrl,
                 dataType: "text",
@@ -135,5 +138,3 @@ class View extends EventEmitter implements IView {
         });
     }
 }
-
-export {View, ViewSettings};

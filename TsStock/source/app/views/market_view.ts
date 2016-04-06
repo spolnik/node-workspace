@@ -3,7 +3,7 @@ import * as $ from "jquery";
 import {IView, IMediator} from "../../framework/interfaces";
 
 @ViewSettings("./source/app/templates/market.hbs", "#outlet")
-class MarketView extends View implements IView {
+export class MarketView extends View implements IView {
 
     constructor(metiator: IMediator) {
         super(metiator);
@@ -46,7 +46,7 @@ class MarketView extends View implements IView {
     protected unbindDomEvents() {
         let scope = this.container;
         $(".getQuote").off("click", scope);
-        let table = $(scope).find("table").dataTable();
+        let table: DataTables.DataTable = $(scope).find("table").dataTable();
         table.fnDestroy();
     }
 
@@ -58,5 +58,3 @@ class MarketView extends View implements IView {
             null));
     }
 }
-
-export {MarketView};
