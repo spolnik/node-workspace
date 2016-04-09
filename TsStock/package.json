@@ -15,15 +15,12 @@
   "author": "Jacek Spolnik",
   "license": "MIT",
   "dependencies": {
-    "datatables.net": "^1.10.11",
-    "datatables.net-bs": "^1.10.11",
     "react": "^0.14.8"
   },
   "devDependencies": {
     "bower": "^1.7.9",
     "bower-webpack-plugin": "^0.1.9",
     "chai": "^3.2.0",
-    "handlebars-loader": "^1.2.0",
     "mocha": "^2.2.5",
     "script-loader": "^0.6.1",
     "sinon": "^1.16.1",

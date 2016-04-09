@@ -14,8 +14,7 @@ module.exports = {
     },
     module: {
         loaders: [
-            { test: /\.tsx?$/, loader: 'ts-loader' },
-            { test: /\.hbs$/, loader: 'handlebars-loader' }
+            { test: /\.tsx?$/, loader: 'ts-loader' }
         ]
     },
     devtool: 'source-map',
