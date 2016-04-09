@@ -1,7 +1,7 @@
 import * as React from 'react';
 import {List} from './List';
 
-export interface TaskData {
+export interface TaskModel {
     done: boolean;
     name: string;
 }
@@ -11,7 +11,7 @@ export interface CardData {
     title: string;
     description: string;
     status: string;
-    tasks: TaskData[];
+    tasks: TaskModel[];
 }
 
 export interface KanbanBoardProps {
