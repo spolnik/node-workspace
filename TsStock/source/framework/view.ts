@@ -1,8 +1,5 @@
 import {EventEmitter} from "./event_emitter";
 import {IView, IMediator} from "./interfaces";
-import * as Q from "q";
-import * as $ from "jquery";
-import * as Handlebars from "handlebars";
 
 export function ViewSettings(templateUrl: string, container: string) {
     return function (target: any) {
@@ -27,7 +24,7 @@ export function ViewSettings(templateUrl: string, container: string) {
             return construct(original, args);
         };
 
-        // copy prototype so intanceof operator still works
+        // copy prototype so instanceof operator still works
         f.prototype = original.prototype;
 
         // return new constructor (will override original)
@@ -70,7 +67,6 @@ export abstract class View extends EventEmitter implements IView {
         });
     }
 
-    // asynchroniusly compile a template
     private compileTemplateAsync(source: string) {
         return Q.Promise((resolve: (r) => {}, reject: (e) => {}) => {
             try {
@@ -83,7 +79,6 @@ export abstract class View extends EventEmitter implements IView {
         });
     }
 
-    // asynchroniusly loads and compile a template if not done already
     private getTemplateAsync() {
         return Q.Promise((resolve: (r) => {}, reject: (e) => {}) => {
             if (this.templateDelegate === undefined || this.templateDelegate === null) {
@@ -105,7 +100,6 @@ export abstract class View extends EventEmitter implements IView {
         });
     }
 
-    // asynchroniusly renders the view
     protected renderAsync(model) {
         return Q.Promise((resolve: (r) => {}, reject: (e) => {}) => {
             this.getTemplateAsync()

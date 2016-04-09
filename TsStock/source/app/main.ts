@@ -3,6 +3,11 @@ import {MarketController} from "./controllers/market_controller";
 import {SymbolController} from "./controllers/symbol_controller";
 import {IAppSettings} from "../framework/interfaces";
 
+declare let require: { (input: any): void };
+
+require("../../bower_components/datatables.net/js/jquery.dataTables.min");
+require("../../bower_components/highcharts");
+
 let appSettings: IAppSettings = {
     isDebug: true,
     defaultController: "market",

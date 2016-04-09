@@ -1,4 +1,3 @@
-import * as $ from "jquery";
 import {IMediator, IAppEvent} from "./interfaces";
 
 export class Mediator implements IMediator {

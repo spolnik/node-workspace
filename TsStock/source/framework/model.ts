@@ -1,6 +1,4 @@
 import {EventEmitter} from "./event_emitter";
-import * as $ from "jquery";
-import * as Q from "q";
 import {IMediator, IModel} from "./interfaces";
 
 export function ModelSettings(serviceUrl: string) {

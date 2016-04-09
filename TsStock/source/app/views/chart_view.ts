@@ -1,12 +1,11 @@
 import {View, AppEvent, ViewSettings} from "../../framework/framework";
-import * as $ from "jquery";
 import {IMediator, IView} from "../../framework/interfaces";
 
 @ViewSettings(null, "#chart_container")
-class ChartView extends View implements IView {
+export class ChartView extends View implements IView {
 
-    constructor(metiator: IMediator) {
-        super(metiator);
+    constructor(mediator: IMediator) {
+        super(mediator);
     }
 
     initialize(): void {
@@ -36,9 +35,11 @@ class ChartView extends View implements IView {
     }
 
     private renderChart(model) {
-        $(this.container).highcharts({
+        let $container = $(this.container);
+        new Highcharts.Chart(<HighchartsOptions>{
             chart: {
-                zoomType: "x"
+                zoomType: "x",
+                renderTo: $container[0]
             },
             title: {
                 text: model.title
@@ -74,5 +75,3 @@ class ChartView extends View implements IView {
         });
     }
 }
-
-export {ChartView};

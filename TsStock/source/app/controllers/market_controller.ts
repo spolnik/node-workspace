@@ -16,10 +16,18 @@ export class MarketController extends Controller implements IController {
         this.nyseModel = new NyseModel(mediator);
     }
 
-    // initialize views/ models and strat listening to controller actions
-    public initialize(): void {
+    initialize(): void {
+        this.subscribeToControllerActionEvents();
+        this.initializeViewAndModels();
+    }
 
-        // subscribe to controller action events
+    private initializeViewAndModels() {
+        this.marketView.initialize();
+        this.nasdaqModel.initialize();
+        this.nyseModel.initialize();
+    }
+
+    private subscribeToControllerActionEvents() {
         this.subscribeToEvents([
             new AppEvent("app.controller.market.nasdaq", null, (e, args: string[]) => {
                 this.nasdaq(args);
@@ -28,11 +36,6 @@ export class MarketController extends Controller implements IController {
                 this.nyse(args);
             })
         ]);
-
-        // initialize view and models events
-        this.marketView.initialize();
-        this.nasdaqModel.initialize();
-        this.nyseModel.initialize();
     }
 
     // dispose views/models and stop listening to controller actions

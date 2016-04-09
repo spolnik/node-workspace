@@ -1,14 +1,14 @@
 import {Model, AppEvent, ModelSettings} from "../../framework/framework";
 import {IModel, IMediator} from "../../framework/interfaces";
+import {Stocks} from "./stocks";
 
 @ModelSettings("./data/nasdaq.json")
-class NasdaqModel extends Model implements IModel {
+export class NasdaqModel extends Model implements IModel {
 
-    constructor(metiator: IMediator) {
-        super(metiator);
+    constructor(mediator: IMediator) {
+        super(mediator);
     }
 
-    // listen to model events
     public initialize() {
         this.subscribeToEvents([
             new AppEvent("app.model.nasdaq.change", null, (e, args) => {
@@ -17,7 +17,6 @@ class NasdaqModel extends Model implements IModel {
         ]);
     }
 
-    // dispose model events
     public dispose() {
         this.unsubscribeToEvents();
     }
@@ -26,17 +25,11 @@ class NasdaqModel extends Model implements IModel {
         this.getAsync("json", args)
             .then((data) => {
 
-                // format data
-                let stocks = {items: data, market: "NASDAQ"};
-
-                // pass controll to the market view
+                let stocks = new Stocks(data, "NASDAQ");
                 this.triggerEvent(new AppEvent("app.view.market.render", stocks, null));
             })
             .catch((e) => {
-                // pass control to the global error handler
                 this.triggerEvent(new AppEvent("app.error", e, null));
             });
     }
 }
-
-export {NasdaqModel};

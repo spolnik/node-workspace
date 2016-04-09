@@ -9,7 +9,6 @@ export class NyseModel extends Model implements IModel {
         super(mediator);
     }
 
-    // listen to model events
     public initialize() {
         this.subscribeToEvents([
             new AppEvent("app.model.nyse.change", null, (e, args) => {
@@ -18,7 +17,6 @@ export class NyseModel extends Model implements IModel {
         ]);
     }
 
-    // dispose model events
     public dispose() {
         this.unsubscribeToEvents();
     }
@@ -26,15 +24,10 @@ export class NyseModel extends Model implements IModel {
     private onChange(args): void {
         this.getAsync("json", args)
             .then((data) => {
-
-                // format data
                 let stocks = new Stocks(data, "NYSE");
-
-                // pass control to the market view
                 this.triggerEvent(new AppEvent("app.view.market.render", stocks, null));
             })
             .catch((e) => {
-                // pass control to the global error handler
                 this.triggerEvent(new AppEvent("app.error", e, null));
             });
     }

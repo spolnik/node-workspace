@@ -1,0 +1,28 @@
+{
+  "name": "TsStock",
+  "description": "TypeScript sample app",
+  "main": "./dist/bundle.js",
+  "authors": [
+    "Jacek Spolnik"
+  ],
+  "license": "MIT",
+  "homepage": "https://github.com/spolnik/node-workspace",
+  "moduleType": [],
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "animate.css": "^3.5.1",
+    "bootstrap": "^3.3.6",
+    "jquery": "^2.2.3",
+    "highcharts": "^4.2.3",
+    "handlebars": "^4.0.5",
+    "q": "^2.0.2",
+    "datatables.net": "^1.10.11",
+    "datatables.net-bs": "^1.10.11"
+  }
+}
