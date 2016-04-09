@@ -8,7 +8,7 @@
   "author": "Jacek Spólnik",
   "license": "MIT",
   "scripts": {
-    "server": "webpack-dev-server --progress",
+    "server": "webpack-dev-server --progress --colors",
     "start": "tsc && concurrently \"npm run tsc:w\" \"npm run server\" ",
     "tsc": "tsc",
     "tsc:w": "tsc -w",
