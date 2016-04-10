@@ -52,8 +52,30 @@ server.get('/cards', (req, res, next) => {
             next(err);
         } else {
             res.send(docs);
-            res.send(204);
+            res.send(200);
             next();
+        }
+    });
+});
+
+server.post('/cards/:cardId/tasks', (req, res, next) => {
+    let cardId: number = Number(req.params.cardId);
+    let newTask = JSON.parse(req.body);
+
+    db.findOne<Card>({id: cardId}, (err, doc) => {
+        if (err) {
+            next(err);
+        } else {
+            doc.tasks.push(newTask);
+            db.update({id: cardId}, doc, {}, (err, numReplaced) => {
+                if (err) {
+                    next(err);
+                } else {
+                    res.send(newTask);
+                    res.send(200);
+                    next();
+                }
+            });
         }
     });
 });
@@ -72,8 +94,7 @@ server.del('/cards/:cardId/tasks/:taskId', (req, res, next) => {
                 if (err) {
                     next(err);
                 } else {
-                    res.send(numReplaced);
-                    res.send(204);
+                    res.send(200);
                     next();
                 }
             });
@@ -95,8 +116,7 @@ server.put('/cards/:cardId/tasks/:taskId', (req, res, next) => {
                 if (err) {
                     next(err);
                 } else {
-                    res.send(numReplaced);
-                    res.send(204);
+                    res.send(200);
                     next();
                 }
             });
