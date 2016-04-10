@@ -10,6 +10,7 @@ export interface CardData {
     id: number;
     title: string;
     description: string;
+    color: string;
     status: string;
     tasks: TaskModel[];
 }
