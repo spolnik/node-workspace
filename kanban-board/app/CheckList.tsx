@@ -1,11 +1,11 @@
 import * as React from "react";
 import {TaskModel} from "./KanbanBoard";
-import {KanbanBoardCallbacks} from "./KanbanBoardContainer";
+import {KanbanBoardTaskCallbacks} from "./interfaces";
 
 export interface CheckListProps {
     cardId: number;
     tasks: TaskModel[];
-    taskCallbacks: KanbanBoardCallbacks;
+    taskCallbacks: KanbanBoardTaskCallbacks;
 }
 
 export class CheckList extends React.Component<CheckListProps, {}> {

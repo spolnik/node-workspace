@@ -1,21 +1,16 @@
 import * as React from "react";
-import {KanbanBoard, CardModel} from "./KanbanBoard";
+import KanbanBoard, {CardModel} from "./KanbanBoard";
 import "whatwg-fetch";
 import update = require("react-addons-update");
+import {API_URL} from "./constants";
+import {KanbanBoardTaskCallbacks} from "./interfaces";
 
 interface KanbanBoardState {
     cards: CardModel[]
 }
 
-export interface KanbanBoardCallbacks {
-    addTask: (cardId: number, taskName: string) => void;
-    deleteTask: (cardId: number, taskId: number, taskIndex: number) => void;
-    toggleTask: (cardId: number, taskId: number, taskIndex: number) => void;
-}
 
-const API_URL = 'http://localhost:3000';
-
-export class KanbanBoardContainer extends React.Component<{}, KanbanBoardState> implements KanbanBoardCallbacks {
+export class KanbanBoardContainer extends React.Component<{}, KanbanBoardState> implements KanbanBoardTaskCallbacks {
 
     constructor(props) {
         super(props);
@@ -129,12 +124,49 @@ export class KanbanBoardContainer extends React.Component<{}, KanbanBoardState> 
         });
     }
 
+    updateCardStatus(cardId: number, listId: string) {
+        let cardIndex = this.findCardIndex(cardId);
+        let card = this.state.cards[cardIndex];
+
+        if (card.status !== listId) {
+            this.setState(update(this.state, {
+                cards: {
+                    [cardIndex]: {
+                        status: { $set: listId }
+                    }
+                }
+            }));
+        }
+    }
+
+    updateCardPosition(cardId: number, afterId: number) {
+        if (cardId === afterId) return;
+
+        let cardIndex = this.findCardIndex(cardId);
+        let card = this.state.cards[cardIndex];
+        let afterIndex = this.findCardIndex(afterId);
+
+        this.setState(update(this.state, {
+            cards: {
+                $splice: [
+                    [cardIndex, 1],
+                    [afterIndex, 0, card]
+                ]
+            }
+        }));
+    }
+
     render() {
         return <KanbanBoard cards={this.state.cards}
                             taskCallbacks = {{
                                 toggleTask: this.toggleTask.bind(this),
                                 deleteTask: this.deleteTask.bind(this),
                                 addTask: this.addTask.bind(this)
-                            }} />
+                            }}
+                            cardCallbacks={{
+                                updateStatus: this.updateCardStatus.bind(this),
+                                updatePosition: this.updateCardPosition.bind(this)
+                            }}
+        />
     }
 }

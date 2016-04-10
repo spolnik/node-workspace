@@ -1,22 +1,24 @@
 import * as React from "react";
 import * as marked from "marked";
 import * as ReactCSSTransitionGroup from "react-addons-css-transition-group";
+import {DragSource} from "react-dnd";
 import {CheckList} from "./CheckList";
 import {CardModel} from "./KanbanBoard";
-import {KanbanBoardCallbacks} from "./KanbanBoardContainer";
+import {KanbanBoardCardCallbacks, KanbanBoardTaskCallbacks} from "./interfaces";
+import {CARD} from "./constants";
 
-export interface CardState {
+interface CardState {
     showDetails: boolean;
 }
 
-export interface CardProps extends React.Props<{}> {
+interface CardProps {
     card: CardModel;
-    taskCallbacks: KanbanBoardCallbacks;
+    taskCallbacks: KanbanBoardTaskCallbacks;
+    cardCallbacks: KanbanBoardCardCallbacks;
+    connectDragSource: Function;
 }
 
-export class Card extends React.Component<CardProps, CardState> {
-
-    state: CardState;
+class Card extends React.Component<CardProps, CardState> {
 
     constructor(props: CardProps) {
         super(props);
@@ -26,15 +28,17 @@ export class Card extends React.Component<CardProps, CardState> {
     }
 
     toggleDetails() {
-        this.setState({ showDetails: !this.state.showDetails });
+        this.setState({showDetails: !this.state.showDetails});
     }
 
     render() {
+        const { connectDragSource } = this.props;
+
         let cardDetails;
 
         if (this.state.showDetails) {
             cardDetails = <div className="card__details">
-                <span dangerouslySetInnerHTML={{__html:marked(this.props.card.description)}} />
+                <span dangerouslySetInnerHTML={{__html:marked(this.props.card.description)}}/>
                 <CheckList cardId={this.props.card.id}
                            tasks={this.props.card.tasks}
                            taskCallbacks={this.props.taskCallbacks}
@@ -42,7 +46,7 @@ export class Card extends React.Component<CardProps, CardState> {
             </div>;
         }
 
-        let sideColor ={
+        let sideColor = {
             position: 'absolute',
             zIndex: -1,
             top: 0,
@@ -54,7 +58,7 @@ export class Card extends React.Component<CardProps, CardState> {
 
         const cardClassName = this.state.showDetails ? "card__title card__title--is-open" : "card__title";
 
-        return (
+        return connectDragSource(
             <div className="card">
                 <div style={sideColor}></div>
                 <div className={cardClassName} onClick={this.toggleDetails.bind(this)}>
@@ -62,10 +66,26 @@ export class Card extends React.Component<CardProps, CardState> {
                 </div>
                 <ReactCSSTransitionGroup transitionName="toggle"
                                          transitionEnterTimeout={250}
-                                         transitionLeaveTimeout={250} >
-                {cardDetails}
+                                         transitionLeaveTimeout={250}>
+                    {cardDetails}
                 </ReactCSSTransitionGroup>
             </div>
         )
     }
 }
+
+const cardDragSpec = {
+    beginDrag(props: CardProps) {
+        return {
+            id: props.card.id
+        };
+    }
+};
+
+let collectDrag = (connect, monitor) => {
+    return {
+        connectDragSource: connect.dragSource()
+    };
+};
+
+export default DragSource(CARD, cardDragSpec, collectDrag)(Card);
