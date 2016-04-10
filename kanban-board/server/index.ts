@@ -37,6 +37,14 @@ let cardsList: Card[] = [
             }
         ]
     },
+    {
+        id: 919,
+        title: "Add some refs",
+        description: "Add some references about react tutorials to awesome list",
+        color: "#e0fd00",
+        status: "done",
+        tasks: []
+    }
 ];
 
 db.insert(cardsList);
