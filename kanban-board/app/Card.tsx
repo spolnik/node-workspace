@@ -2,6 +2,7 @@ import * as React from "react";
 import * as marked from "marked";
 import {CheckList} from "./CheckList";
 import {CardModel} from "./KanbanBoard";
+import {KanbanBoardCallbacks} from "./KanbanBoardContainer";
 
 export interface CardState {
     showDetails: boolean;
@@ -9,6 +10,7 @@ export interface CardState {
 
 export interface CardProps extends React.Props<{}> {
     card: CardModel;
+    taskCallbacks: KanbanBoardCallbacks;
 }
 
 export class Card extends React.Component<CardProps, CardState> {
@@ -32,7 +34,10 @@ export class Card extends React.Component<CardProps, CardState> {
         if (this.state.showDetails) {
             cardDetails = <div className="card__details">
                 <span dangerouslySetInnerHTML={{__html:marked(this.props.card.description)}} />
-                <CheckList cardId={this.props.card.id} tasks={this.props.card.tasks} />
+                <CheckList cardId={this.props.card.id}
+                           tasks={this.props.card.tasks}
+                           taskCallbacks={this.props.taskCallbacks}
+                />
             </div>;
         }
 
