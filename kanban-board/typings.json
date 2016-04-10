@@ -5,6 +5,8 @@
   "ambientDependencies": {
     "marked": "registry:dt/marked#0.0.0+20160325085301",
     "react": "registry:dt/react#0.14.0+20160319053454",
+    "react-addons-css-transition-group": "registry:dt/react-addons-css-transition-group#0.14.0+20160316155526",
+    "react-addons-transition-group": "registry:dt/react-addons-transition-group#0.14.0+20160316155526",
     "react-addons-update": "registry:dt/react-addons-update#0.14.0+20160316155526",
     "react-dom": "registry:dt/react-dom#0.14.0+20160316155526",
     "whatwg-fetch": "registry:dt/whatwg-fetch#0.0.0+20160316155526"

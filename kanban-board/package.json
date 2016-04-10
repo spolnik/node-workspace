@@ -27,6 +27,8 @@
   "dependencies": {
     "marked": "^0.3.5",
     "react": "^15.0.0",
+    "react-addons-css-transition-group": "^15.0.1",
+    "react-addons-transition-group": "^15.0.1",
     "react-addons-update": "^15.0.1",
     "react-dom": "^15.0.0",
     "whatwg-fetch": "^0.11.0"

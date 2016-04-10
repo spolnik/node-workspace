@@ -1,5 +1,6 @@
 import * as React from "react";
 import * as marked from "marked";
+import * as ReactCSSTransitionGroup from "react-addons-css-transition-group";
 import {CheckList} from "./CheckList";
 import {CardModel} from "./KanbanBoard";
 import {KanbanBoardCallbacks} from "./KanbanBoardContainer";
@@ -59,7 +60,11 @@ export class Card extends React.Component<CardProps, CardState> {
                 <div className={cardClassName} onClick={this.toggleDetails.bind(this)}>
                     {this.props.card.title}
                 </div>
+                <ReactCSSTransitionGroup transitionName="toggle"
+                                         transitionEnterTimeout={250}
+                                         transitionLeaveTimeout={250} >
                 {cardDetails}
+                </ReactCSSTransitionGroup>
             </div>
         )
     }
