@@ -12,11 +12,12 @@ export class List extends React.Component<ListProps, {}> {
     render() {
         let cards = this.props.cards.map((card) => {
             return (
-                <Card id={card.id}
-                         title={card.title}
-                         description={card.description}
-                         color={card.color}
-                         tasks={card.tasks} />
+                <Card key={card.id}
+                      id={card.id}
+                      title={card.title}
+                      description={card.description}
+                      color={card.color}
+                      tasks={card.tasks}/>
             )
         });
 

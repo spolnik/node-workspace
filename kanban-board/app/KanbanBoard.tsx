@@ -2,6 +2,7 @@ import * as React from 'react';
 import {List} from './List';
 
 export interface TaskModel {
+    id: number;
     done: boolean;
     name: string;
 }
