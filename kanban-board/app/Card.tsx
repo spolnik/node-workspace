@@ -1,7 +1,7 @@
 import * as React from "react";
 import * as marked from "marked";
 import * as ReactCSSTransitionGroup from "react-addons-css-transition-group";
-import {DragSource} from "react-dnd";
+import {DragSource, DropTarget} from "react-dnd";
 import {CheckList} from "./CheckList";
 import {CardModel} from "./KanbanBoard";
 import {KanbanBoardCardCallbacks, KanbanBoardTaskCallbacks} from "./interfaces";
@@ -16,6 +16,7 @@ interface CardProps {
     taskCallbacks: KanbanBoardTaskCallbacks;
     cardCallbacks: KanbanBoardCardCallbacks;
     connectDragSource: Function;
+    connectDropTarget: Function;
 }
 
 class Card extends React.Component<CardProps, CardState> {
@@ -32,7 +33,7 @@ class Card extends React.Component<CardProps, CardState> {
     }
 
     render() {
-        const { connectDragSource } = this.props;
+        const { connectDragSource, connectDropTarget } = this.props;
 
         let cardDetails;
 
@@ -58,7 +59,7 @@ class Card extends React.Component<CardProps, CardState> {
 
         const cardClassName = this.state.showDetails ? "card__title card__title--is-open" : "card__title";
 
-        return connectDragSource(
+        return connectDropTarget(connectDragSource(
             <div className="card">
                 <div style={sideColor}></div>
                 <div className={cardClassName} onClick={this.toggleDetails.bind(this)}>
@@ -70,7 +71,7 @@ class Card extends React.Component<CardProps, CardState> {
                     {cardDetails}
                 </ReactCSSTransitionGroup>
             </div>
-        )
+        ));
     }
 }
 
@@ -82,10 +83,25 @@ const cardDragSpec = {
     }
 };
 
+const cardDropSpec = {
+    hover(props, monitor) {
+        const draggedId = monitor.getItem().id;
+        props.cardCallbacks.updatePosition(draggedId, props.id);
+    }
+};
+
 let collectDrag = (connect, monitor) => {
     return {
         connectDragSource: connect.dragSource()
     };
 };
 
-export default DragSource(CARD, cardDragSpec, collectDrag)(Card);
+let collectDrop = (connect, monitor) => {
+    return {
+        connectDropTarget: connect.dropTarget()
+    };
+};
+
+const dragHighOrderCard = DragSource(CARD, cardDragSpec, collectDrag)(Card);
+const dragDropHighOrderCard = DropTarget(CARD, cardDropSpec, collectDrop)(dragHighOrderCard);
+export default dragDropHighOrderCard;
