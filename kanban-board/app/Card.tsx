@@ -1,18 +1,14 @@
 import * as React from "react";
-import {CheckList} from "./CheckList";
-import {TaskModel} from "./KanbanBoard";
 import * as marked from "marked";
+import {CheckList} from "./CheckList";
+import {CardModel} from "./KanbanBoard";
 
 export interface CardState {
     showDetails: boolean;
 }
 
-export interface CardProps {
-    id: number;
-    title: string;
-    description: string;
-    color: string;
-    tasks: TaskModel[];
+export interface CardProps extends React.Props<{}> {
+    card: CardModel;
 }
 
 export class Card extends React.Component<CardProps, CardState> {
@@ -35,8 +31,8 @@ export class Card extends React.Component<CardProps, CardState> {
 
         if (this.state.showDetails) {
             cardDetails = <div className="card__details">
-                <span dangerouslySetInnerHTML={{__html:marked(this.props.description)}} />
-                <CheckList cardId={this.props.id} tasks={this.props.tasks} />
+                <span dangerouslySetInnerHTML={{__html:marked(this.props.card.description)}} />
+                <CheckList cardId={this.props.card.id} tasks={this.props.card.tasks} />
             </div>;
         }
 
@@ -47,7 +43,7 @@ export class Card extends React.Component<CardProps, CardState> {
             bottom: 0,
             left: 0,
             width: 7,
-            backgroundColor: this.props.color
+            backgroundColor: this.props.card.color
         };
 
         const cardClassName = this.state.showDetails ? "card__title card__title--is-open" : "card__title";
@@ -56,7 +52,7 @@ export class Card extends React.Component<CardProps, CardState> {
             <div className="card">
                 <div style={sideColor}></div>
                 <div className={cardClassName} onClick={this.toggleDetails.bind(this)}>
-                    {this.props.title}
+                    {this.props.card.title}
                 </div>
                 {cardDetails}
             </div>

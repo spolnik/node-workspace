@@ -7,7 +7,7 @@ export interface TaskModel {
     name: string;
 }
 
-export interface CardData {
+export interface CardModel {
     id: number;
     title: string;
     description: string;
@@ -17,7 +17,7 @@ export interface CardData {
 }
 
 export interface KanbanBoardProps {
-    cards: CardData[];
+    cards: CardModel[];
 }
 
 export class KanbanBoard extends React.Component<KanbanBoardProps, {}> {

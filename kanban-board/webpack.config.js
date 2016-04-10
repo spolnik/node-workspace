@@ -13,7 +13,7 @@ var config = {
   module: {
     loaders: [{
       test: /\.tsx?$/,
-      exclude: /node_modules/,
+      exclude: [/node_modules/, /server/],
       loader: 'ts-loader'
     }]
   },
@@ -37,6 +37,6 @@ if (process.env.NODE_ENV === 'production') {
       'process.env': {NODE_ENV: JSON.stringify('production')}
     })
   ];
-};
+}
 
 module.exports = config;

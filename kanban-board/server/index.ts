@@ -37,6 +37,8 @@ let cardsList = [
 ];
 
 let server = restify.createServer();
+server.use(restify.CORS());
+
 server.get('/cards', (req, res, next) => {
     res.send(cardsList);
     res.send(204);

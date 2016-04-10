@@ -1,11 +1,13 @@
-React & TypeScript App Boilerplate
+Kanban Board
 =====================
 
-Quickstart project template for learning React with TypeScript.
+### Server
 
-### Objective
-
-This boilerplate is purposefully simple to show the minimal setup needed to create React projects with Webpack and Babel. It aims to be a starting point for learning React, with low cognitive load and as such avoids having many separate config files and advanced configuration options, while providing a solid foundation for new React projects.
+```
+cd server
+npm install
+npm start
+```
 
 ### Usage
 
