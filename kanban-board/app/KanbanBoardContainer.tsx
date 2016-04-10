@@ -39,6 +39,7 @@ export class KanbanBoardContainer extends React.Component<{}, KanbanBoardState> 
     }
 
     addTask(cardId: number, taskName: string) {
+        let prevState = this.state;
         let cardIndex = this.findCardIndex(cardId);
 
         let newTask = {id:Date.now(), name: taskName, done: false};
@@ -54,16 +55,26 @@ export class KanbanBoardContainer extends React.Component<{}, KanbanBoardState> 
             method: 'post',
             body: JSON.stringify(newTask)
         }).then(
-            (response) => response.json()
+            (response) => {
+                if (response.ok) {
+                    return response.json();
+                } else {
+                    throw new Error("Server response wasn't OK");
+                }
+            }
         ).then(
             (responseData) => {
                 newTask.id = responseData.id;
                 this.setState({cards: nextState});
+        }).catch((error) => {
+            console.log(error);
+            this.setState(prevState);
         });
     }
 
     deleteTask(cardId: number, taskId: number, taskIndex: number) {
         let cardIndex = this.findCardIndex(cardId);
+        let prevState = this.state;
 
         let nextState = update(this.state.cards, {
             [cardIndex]: {
@@ -75,10 +86,18 @@ export class KanbanBoardContainer extends React.Component<{}, KanbanBoardState> 
 
         fetch(`${API_URL}/cards/${cardId}/tasks/${taskId}`, {
             method: 'delete'
+        }).then((response) => {
+            if (!response.ok) {
+                throw new Error("Server response wasn't OK");
+            }
+        }).catch((error) => {
+            console.log(error);
+            this.setState(prevState);
         });
     }
 
     toggleTask(cardId: number, taskId: number, taskIndex: number) {
+        let prevState = this.state;
         let cardIndex = this.findCardIndex(cardId);
         let newDoneValue = false;
 
@@ -100,6 +119,13 @@ export class KanbanBoardContainer extends React.Component<{}, KanbanBoardState> 
         fetch(`${API_URL}/cards/${cardId}/tasks/${taskId}`, {
             method: 'put',
             body: JSON.stringify({done: newDoneValue})
+        }).then((response) => {
+            if (!response.ok) {
+                throw new Error("Server response wasn't OK");
+            }
+        }).catch((error) => {
+            console.log(error);
+            this.setState(prevState);
         });
     }
 
