@@ -34,12 +34,36 @@ export class KanbanBoardContainer extends React.Component<{}, KanbanBoardState> 
             });
     }
 
-    addTask(cardId: number, taskName: string) {
+    private findCardIndex(cardId: number) {
+        return this.state.cards.findIndex((card) => card.id === cardId);
+    }
 
+    addTask(cardId: number, taskName: string) {
+        let cardIndex = this.findCardIndex(cardId);
+
+        let newTask = {id:Date.now(), name: taskName, done: false};
+        let nextState = update(this.state.cards, {
+            [cardIndex]: {
+                tasks: {$push: [newTask] }
+            }
+        });
+
+        this.setState({cards: nextState});
+
+        fetch(`${API_URL}/cards/${cardId}/tasks`, {
+            method: 'post',
+            body: JSON.stringify(newTask)
+        }).then(
+            (response) => response.json()
+        ).then(
+            (responseData) => {
+                newTask.id = responseData.id;
+                this.setState({cards: nextState});
+        });
     }
 
     deleteTask(cardId: number, taskId: number, taskIndex: number) {
-        let cardIndex = this.state.cards.findIndex((card) => card.id === cardId);
+        let cardIndex = this.findCardIndex(cardId);
 
         let nextState = update(this.state.cards, {
             [cardIndex]: {
@@ -55,8 +79,7 @@ export class KanbanBoardContainer extends React.Component<{}, KanbanBoardState> 
     }
 
     toggleTask(cardId: number, taskId: number, taskIndex: number) {
-        let cardIndex = this.state.cards.findIndex((card) => card.id == cardId);
-
+        let cardIndex = this.findCardIndex(cardId);
         let newDoneValue = false;
 
         let nextState = update(this.state.cards, {
