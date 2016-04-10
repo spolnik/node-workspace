@@ -1,7 +1,10 @@
 import * as restify from "restify";
+import {Card} from "./Card";
+import NeDBDataStore = require("nedb");
 
+let db = new NeDBDataStore();
 
-let cardsList = [
+let cardsList: Card[] = [
     {
         id: 1,
         title: "Read the Book",
@@ -36,39 +39,69 @@ let cardsList = [
     },
 ];
 
+db.insert(cardsList);
+
 let server = restify.createServer();
 server.use(restify.CORS());
 server.use(restify.bodyParser());
 
 server.get('/cards', (req, res, next) => {
-    res.send(cardsList);
-    res.send(204);
-    next();
+
+    db.find<Card>({}, (err, docs) => {
+        if (err) {
+            next(err);
+        } else {
+            res.send(docs);
+            res.send(204);
+            next();
+        }
+    });
 });
 
 server.del('/cards/:cardId/tasks/:taskId', (req, res, next) => {
     let cardId: number = Number(req.params.cardId);
     let taskId: number = Number(req.params.taskId);
 
-    let currentCard = cardsList.find((card) => card.id === cardId);
-
-    let deletedTask = currentCard.tasks.splice(taskId, 1);
-    res.send(deletedTask);
-    res.send(204);
-    next();
+    db.findOne<Card>({id: cardId}, (err, doc) => {
+        if (err) {
+            next(err);
+        } else {
+            let taskIndex = doc.tasks.findIndex((task) => task.id === taskId);
+            doc.tasks.splice(taskIndex, 1);
+            db.update({id: cardId}, doc, {}, (err, numReplaced) => {
+                if (err) {
+                    next(err);
+                } else {
+                    res.send(numReplaced);
+                    res.send(204);
+                    next();
+                }
+            });
+        }
+    });
 });
 
 server.put('/cards/:cardId/tasks/:taskId', (req, res, next) => {
     let cardId: number = Number(req.params.cardId);
     let taskId: number = Number(req.params.taskId);
 
-    let currentCard = cardsList.find((card) => card.id === cardId);
-    let currentTask = currentCard.tasks.find((task) => task.id === taskId);
-
-    currentTask.done = JSON.parse(req.body).done;
-    res.send(currentTask.done);
-    res.send(204);
-    next();
+    db.findOne<Card>({id: cardId}, (err, doc) => {
+        if (err) {
+            next(err);
+        } else {
+            let currentTask = doc.tasks.find((task) => task.id === taskId);
+            currentTask.done = JSON.parse(req.body).done;
+            db.update({id: cardId}, doc, {}, (err, numReplaced) => {
+                if (err) {
+                    next(err);
+                } else {
+                    res.send(numReplaced);
+                    res.send(204);
+                    next();
+                }
+            });
+        }
+    });
 });
 
 server.listen(3000, () => {

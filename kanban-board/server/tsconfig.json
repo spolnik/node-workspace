@@ -2,14 +2,11 @@
   "compilerOptions": {
     "target": "es6",
     "module": "commonjs",
-    "noImplicitAny": true,
-    "sourceMap": true,
-    "pretty": true
+    "sourceMap": true
   },
   "exclude": [
     "node_modules",
     "typings/browser",
     "typings/browser.d.ts"
-  ],
-  "compileOnSave": true
+  ]
 }
