@@ -1,0 +1,8 @@
+{
+  "name": "server",
+  "version": false,
+  "dependencies": {},
+  "ambientDependencies": {
+    "restify": "registry:dt/restify#2.0.0+20160316155526"
+  }
+}
