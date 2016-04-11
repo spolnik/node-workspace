@@ -2,9 +2,9 @@
   "name": "server",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
+  "main": "server.js",
   "scripts": {
-    "start": "tsc && concurrently \"npm run tsc:w\" \"node index.js\" ",
+    "start": "tsc && concurrently \"npm run tsc:w\" \"node server.js\" ",
     "tsc": "tsc",
     "tsc:w": "tsc -w",
     "typings": "typings",

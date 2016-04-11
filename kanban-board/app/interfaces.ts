@@ -7,4 +7,5 @@ export interface KanbanBoardTaskCallbacks {
 export interface KanbanBoardCardCallbacks {
     updateStatus: (cardId: number, listId: string) => void;
     updatePosition: (cardId: number, afterId: number) => void;
+    persistCardDrag: (cardId: number, status: string) => void;
 }

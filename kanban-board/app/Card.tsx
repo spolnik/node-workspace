@@ -78,9 +78,14 @@ class Card extends React.Component<CardProps, CardState> {
 const cardDragSpec = {
     beginDrag(props: CardProps) {
         return {
-            id: props.card.id
+            id: props.card.id,
+            status: props.card.status
         };
+    },
+    endDrag(props: CardProps) {
+        props.cardCallbacks.persistCardDrag(props.card.id, props.card.status);
     }
+
 };
 
 const cardDropSpec = {

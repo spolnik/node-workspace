@@ -132,6 +132,27 @@ server.put('/cards/:cardId/tasks/:taskId', (req, res, next) => {
     });
 });
 
+server.put('/cards/:cardId', (req, res, next) => {
+    let cardId: number = Number(req.params.cardId);
+    let dragResult: {status: string, row_order_position: number} = JSON.parse(req.body);
+
+    db.findOne<Card>({id: cardId}, (err, doc) => {
+        if (err) {
+            next(err);
+        } else {
+            doc.status = dragResult.status;
+            db.update({id: cardId}, doc, {}, (err, numReplaced) => {
+                if (err) {
+                    next(err);
+                } else {
+                    res.send(200);
+                    next();
+                }
+            });
+        }
+    })
+});
+
 server.listen(3000, () => {
     console.log(`${server.name} listening at ${server.url}`);
 });
