@@ -4,8 +4,9 @@ import * as ReactCSSTransitionGroup from "react-addons-css-transition-group";
 import {DragSource, DropTarget} from "react-dnd";
 import {CheckList} from "./CheckList";
 import {CardModel} from "./KanbanBoard";
-import {KanbanBoardCardCallbacks, KanbanBoardTaskCallbacks} from "./interfaces";
+import {CardCallbacks, TaskCallbacks} from "./interfaces";
 import {CARD} from "./constants";
+import {Link} from "react-router";
 
 interface CardState {
     showDetails: boolean;
@@ -13,8 +14,8 @@ interface CardState {
 
 interface CardProps {
     card: CardModel;
-    taskCallbacks: KanbanBoardTaskCallbacks;
-    cardCallbacks: KanbanBoardCardCallbacks;
+    taskCallbacks: TaskCallbacks;
+    cardCallbacks: CardCallbacks;
     connectDragSource: Function;
     connectDropTarget: Function;
 }
@@ -33,7 +34,7 @@ class Card extends React.Component<CardProps, CardState> {
     }
 
     render() {
-        const { connectDragSource, connectDropTarget } = this.props;
+        const {connectDragSource, connectDropTarget} = this.props;
 
         let cardDetails;
 
@@ -62,6 +63,7 @@ class Card extends React.Component<CardProps, CardState> {
         return connectDropTarget(connectDragSource(
             <div className="card">
                 <div style={sideColor}></div>
+                <div className="card__edit"><Link to={"/edit/" + this.props.card.id}>✎</Link></div>
                 <div className={cardClassName} onClick={this.toggleDetails.bind(this)}>
                     {this.props.card.title}
                 </div>

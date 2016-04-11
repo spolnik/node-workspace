@@ -1,6 +1,7 @@
 import * as restify from "restify";
 import {Card} from "./Card";
 import NeDBDataStore = require("nedb");
+import {CardModel} from "../app/KanbanBoard";
 
 let db = new NeDBDataStore({ filename: 'kanbanDb.json', autoload: true});
 
@@ -89,14 +90,13 @@ server.put('/cards/:cardId/tasks/:taskId', (req, res, next) => {
 
 server.put('/cards/:cardId', (req, res, next) => {
     let cardId: number = Number(req.params.cardId);
-    let dragResult: {status: string, row_order_position: number} = JSON.parse(req.body);
+    let card: CardModel = JSON.parse(req.body);
 
     db.findOne<Card>({id: cardId}, (err, doc) => {
         if (err) {
             next(err);
         } else {
-            doc.status = dragResult.status;
-            db.update({id: cardId}, doc, {}, (err, numReplaced) => {
+            db.update({id: cardId}, card, {}, (err, numReplaced) => {
                 if (err) {
                     next(err);
                 } else {
@@ -106,6 +106,20 @@ server.put('/cards/:cardId', (req, res, next) => {
             });
         }
     })
+});
+
+server.post('/cards', (req, res, next) => {
+    let card: CardModel = JSON.parse(req.body);
+
+    db.insert(card, (err, newDoc) => {
+        if (err) {
+            next(err);
+        } else {
+            res.send(newDoc);
+            res.send(200);
+            next();
+        }
+    });
 });
 
 server.listen(3000, () => {

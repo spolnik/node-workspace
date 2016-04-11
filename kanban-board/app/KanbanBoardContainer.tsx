@@ -1,17 +1,17 @@
 import * as React from "react";
-import KanbanBoard, {CardModel} from "./KanbanBoard";
+import {CardModel, KanbanBoardProps} from "./KanbanBoard";
 import "whatwg-fetch";
 import update = require("react-addons-update");
 import {API_URL} from "./constants";
-import {KanbanBoardTaskCallbacks} from "./interfaces";
+import {TaskCallbacks} from "./interfaces";
 import {throttle} from "./utils";
+import ReactElement = __React.ReactElement;
 
 interface KanbanBoardState {
     cards: CardModel[]
 }
 
-
-export class KanbanBoardContainer extends React.Component<{}, KanbanBoardState> implements KanbanBoardTaskCallbacks {
+export default class KanbanBoardContainer extends React.Component<{}, KanbanBoardState> implements TaskCallbacks {
 
     constructor(props) {
         super(props);
@@ -29,8 +29,8 @@ export class KanbanBoardContainer extends React.Component<{}, KanbanBoardState> 
             .then((responseData) => {
                 this.setState({cards: responseData})
             }).catch((error) => {
-                console.log('Error fetching and parsing data', error);
-            });
+            console.log('Error fetching and parsing data', error);
+        });
     }
 
     private findCardIndex(cardId: number) {
@@ -41,10 +41,10 @@ export class KanbanBoardContainer extends React.Component<{}, KanbanBoardState> 
         let prevState = this.state;
         let cardIndex = this.findCardIndex(cardId);
 
-        let newTask = {id:Date.now(), name: taskName, done: false};
+        let newTask = {id: Date.now(), name: taskName, done: false};
         let nextState = update(this.state.cards, {
             [cardIndex]: {
-                tasks: {$push: [newTask] }
+                tasks: {$push: [newTask]}
             }
         });
 
@@ -65,7 +65,7 @@ export class KanbanBoardContainer extends React.Component<{}, KanbanBoardState> 
             (responseData) => {
                 newTask.id = responseData.id;
                 this.setState({cards: nextState});
-        }).catch((error) => {
+            }).catch((error) => {
             console.log(error);
             this.setState(prevState);
         });
@@ -77,7 +77,7 @@ export class KanbanBoardContainer extends React.Component<{}, KanbanBoardState> 
 
         let nextState = update(this.state.cards, {
             [cardIndex]: {
-                tasks: { $splice: [[taskIndex, 1]] }
+                tasks: {$splice: [[taskIndex, 1]]}
             }
         });
 
@@ -104,10 +104,12 @@ export class KanbanBoardContainer extends React.Component<{}, KanbanBoardState> 
             [cardIndex]: {
                 tasks: {
                     [taskIndex]: {
-                        done: { $apply: (done) => {
-                            newDoneValue = !done;
-                            return newDoneValue;
-                        }}
+                        done: {
+                            $apply: (done) => {
+                                newDoneValue = !done;
+                                return newDoneValue;
+                            }
+                        }
                     }
                 }
             }
@@ -128,6 +130,57 @@ export class KanbanBoardContainer extends React.Component<{}, KanbanBoardState> 
         });
     }
 
+    addCard(card: CardModel) {
+        let prevState = this.state;
+
+        if (!card.id) {
+            card = Object.assign({}, card, {id: Date.now()})
+        }
+
+        let nextState = update(this.state.cards, {$push: [card]});
+        this.setState({cards: nextState});
+
+        fetch(`${API_URL}/cards`, {
+            method: 'post',
+            body: JSON.stringify(card)
+        }).then((response) => {
+            if (response.ok) {
+                return response.json();
+            } else {
+                throw new Error("Server response wasn't OK");
+            }
+        }).then((responseData) => {
+            card.id = responseData.id;
+            this.setState({cards: nextState});
+        }).catch((error) => {
+            console.log(error);
+            this.setState(prevState);
+        });
+    }
+
+    updateCard(card) {
+        let prevState = this.state;
+        let cardIndex = this.findCardIndex(card.id);
+
+        let nextState = update(this.state.cards,
+            {[cardIndex]: {$set: card}}
+        );
+
+        this.setState({cards: nextState});
+
+        fetch(`${API_URL}/cards/${card.id}`, {
+            method: "put",
+            body: JSON.stringify(card)
+        }).then((response) => {
+            if (!response.ok) {
+                throw new Error("Server response wasn’t OK")
+            }
+        }).catch((error) => {
+            console.error("Fetch error:", error);
+            this.setState(prevState);
+        });
+    }
+
     updateCardStatus(cardId: number, listId: string) {
         let cardIndex = this.findCardIndex(cardId);
         let card = this.state.cards[cardIndex];
@@ -136,7 +189,7 @@ export class KanbanBoardContainer extends React.Component<{}, KanbanBoardState> 
             this.setState(update(this.state, {
                 cards: {
                     [cardIndex]: {
-                        status: { $set: listId }
+                        status: {$set: listId}
                     }
                 }
             }));
@@ -166,7 +219,7 @@ export class KanbanBoardContainer extends React.Component<{}, KanbanBoardState> 
 
         fetch(`${API_URL}/cards/${cardId}`, {
             method: 'put',
-            body: JSON.stringify({status: card.status, row_order_position: cardIndex})
+            body: JSON.stringify(card)
         }).then((response) => {
             if (!response.ok) {
                 throw new Error("Server response wasn't OK");
@@ -176,7 +229,7 @@ export class KanbanBoardContainer extends React.Component<{}, KanbanBoardState> 
             this.setState(update(this.state, {
                 cards: {
                     [cardIndex]: {
-                        status: { $set: status }
+                        status: {$set: status}
                     }
                 }
             }));
@@ -184,17 +237,20 @@ export class KanbanBoardContainer extends React.Component<{}, KanbanBoardState> 
     }
 
     render() {
-        return <KanbanBoard cards={this.state.cards}
-                            taskCallbacks = {{
-                                toggleTask: this.toggleTask.bind(this),
-                                deleteTask: this.deleteTask.bind(this),
-                                addTask: this.addTask.bind(this)
-                            }}
-                            cardCallbacks={{
-                                updateStatus: this.updateCardStatus,
-                                updatePosition: this.updateCardPosition,
-                                persistCardDrag: this.persistCardDrag.bind(this)
-                            }}
-        />
-    }
+        return this.props.children && React.cloneElement(this.props.children as ReactElement<KanbanBoardProps>, {
+                cards: this.state.cards,
+                taskCallbacks: {
+                    addTask: this.addTask.bind(this),
+                    deleteTask: this.deleteTask.bind(this),
+                    toggleTask: this.toggleTask.bind(this)
+                },
+                cardCallbacks: {
+                    updateStatus: this.updateCardStatus.bind(this),
+                    updatePosition: throttle(this.updateCardPosition.bind(this), 500),
+                    persistCardDrag: this.persistCardDrag.bind(this),
+                    addCard: this.addCard.bind(this),
+                    updateCard: this.updateCard.bind(this)
+                }
+            } as KanbanBoardProps);
+    };
 }

@@ -1,7 +1,9 @@
 {
   "name": "kanban-board-app",
   "version": false,
-  "dependencies": {},
+  "dependencies": {
+    "react-router": "registry:npm/react-router#2.0.0+20160214194820"
+  },
   "ambientDependencies": {
     "marked": "registry:dt/marked#0.0.0+20160325085301",
     "react": "registry:dt/react#0.14.0+20160319053454",

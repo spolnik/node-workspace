@@ -2,15 +2,15 @@ import * as React from "react";
 import {DropTarget} from "react-dnd";
 import {CardModel} from "./KanbanBoard";
 import Card from "./Card";
-import {KanbanBoardTaskCallbacks, KanbanBoardCardCallbacks} from "./interfaces";
+import {TaskCallbacks, CardCallbacks} from "./interfaces";
 import {CARD} from "./constants";
 
 export interface ListProps {
     id: string;
     title: string;
     cards: CardModel[];
-    taskCallbacks: KanbanBoardTaskCallbacks;
-    cardCallbacks: KanbanBoardCardCallbacks;
+    taskCallbacks: TaskCallbacks;
+    cardCallbacks: CardCallbacks;
     connectDropTarget: Function;
 }
 
@@ -22,7 +22,7 @@ class List extends React.Component<ListProps, {}> {
             return <Card key={card.id}
                          taskCallbacks={this.props.taskCallbacks}
                          cardCallbacks={this.props.cardCallbacks}
-                         card={card}/>
+                         card={card} />
         });
 
         return connectDropTarget(
