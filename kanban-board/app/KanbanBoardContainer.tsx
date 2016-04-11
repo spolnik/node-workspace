@@ -4,6 +4,7 @@ import "whatwg-fetch";
 import update = require("react-addons-update");
 import {API_URL} from "./constants";
 import {KanbanBoardTaskCallbacks} from "./interfaces";
+import {throttle} from "./utils";
 
 interface KanbanBoardState {
     cards: CardModel[]
@@ -17,6 +18,9 @@ export class KanbanBoardContainer extends React.Component<{}, KanbanBoardState> 
         this.state = {
             cards: []
         };
+
+        this.updateCardStatus = throttle(this.updateCardStatus.bind(this), null);
+        this.updateCardPosition = throttle(this.updateCardPosition.bind(this), 500);
     }
 
     componentDidMount() {
@@ -164,8 +168,8 @@ export class KanbanBoardContainer extends React.Component<{}, KanbanBoardState> 
                                 addTask: this.addTask.bind(this)
                             }}
                             cardCallbacks={{
-                                updateStatus: this.updateCardStatus.bind(this),
-                                updatePosition: this.updateCardPosition.bind(this)
+                                updateStatus: this.updateCardStatus,
+                                updatePosition: this.updateCardPosition
                             }}
         />
     }
