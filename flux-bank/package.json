@@ -1,0 +1,33 @@
+{
+  "name": "flux-bank",
+  "version": "0.0.1",
+  "description": "Flux Bank",
+  "repository": {
+    "url": "http://github.com/spolnik/node-workspace"
+  },
+  "author": "Jacek Spólnik",
+  "license": "MIT",
+  "scripts": {
+    "server": "webpack-dev-server --progress --colors",
+    "start": "tsc && concurrently \"npm run tsc:w\" \"npm run server\" ",
+    "tsc": "tsc",
+    "tsc:w": "tsc -w",
+    "typings": "typings",
+    "postinstall": "typings install",
+    "build": "NODE_ENV=production node_modules/.bin/webpack -p --progress --colors"
+  },
+  "devDependencies": {
+    "concurrently": "^2.0.0",
+    "ts-loader": "^0.8.1",
+    "typescript": "^1.8.9",
+    "typings": "^0.7.12",
+    "webpack": "~1.12.*",
+    "webpack-dev-server": "~1.14.*"
+  },
+  "dependencies": {
+    "fbemitter": "^2.0.0",
+    "flux": "^2.1.1",
+    "react": "^15.0.0",
+    "react-dom": "^15.0.0"
+  }
+}
