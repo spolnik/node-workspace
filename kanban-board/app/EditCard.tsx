@@ -19,7 +19,7 @@ export default class EditCard extends React.Component<EditCardProps, CardModel> 
     }
 
     handleChange(field, value) {
-        this.setState(update(this.state, {[field]: value}));
+        this.setState(update(this.state, {[field]: { $set: value}}));
     }
 
     handleSubmit(e: Event) {
