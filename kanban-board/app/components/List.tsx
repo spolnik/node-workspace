@@ -1,9 +1,8 @@
 import * as React from "react";
 import {DropTarget} from "react-dnd";
-import {CardModel} from "./KanbanBoard";
 import Card from "./Card";
-import {TaskCallbacks, CardCallbacks} from "./interfaces";
-import {CARD} from "./constants";
+import {TaskCallbacks, CardCallbacks, CardModel} from "./interfaces";
+import {CARD} from "./../constants";
 
 export interface ListProps {
     id: string;
@@ -41,7 +40,7 @@ const listTargetSpec = {
     }
 };
 
-function collect(connect, monitor) {
+function collect(connect) {
     return {
         connectDropTarget: connect.dropTarget()
     };

@@ -1,5 +1,5 @@
 import * as React from "react";
-import {CardModel} from "./KanbanBoard";
+import {CardModel} from "./interfaces";
 
 interface CardFormProps {
     buttonLabel: string;

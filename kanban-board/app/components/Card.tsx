@@ -3,9 +3,8 @@ import * as marked from "marked";
 import * as ReactCSSTransitionGroup from "react-addons-css-transition-group";
 import {DragSource, DropTarget} from "react-dnd";
 import {CheckList} from "./CheckList";
-import {CardModel} from "./KanbanBoard";
-import {CardCallbacks, TaskCallbacks} from "./interfaces";
-import {CARD} from "./constants";
+import {CardCallbacks, TaskCallbacks, CardModel} from "./interfaces";
+import {CARD} from "./../constants";
 import {Link} from "react-router";
 
 interface CardState {
@@ -97,13 +96,13 @@ const cardDropSpec = {
     }
 };
 
-let collectDrag = (connect, monitor) => {
+let collectDrag = (connect) => {
     return {
         connectDragSource: connect.dragSource()
     };
 };
 
-let collectDrop = (connect, monitor) => {
+let collectDrop = (connect) => {
     return {
         connectDropTarget: connect.dropTarget()
     };

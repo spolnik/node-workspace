@@ -1,4 +1,17 @@
-import {CardModel} from "./KanbanBoard";
+export interface TaskModel {
+    id: number;
+    done: boolean;
+    name: string;
+}
+
+export interface CardModel {
+    id: number;
+    title: string;
+    description: string;
+    color: string;
+    status: string;
+    tasks: TaskModel[];
+}
 
 export interface TaskCallbacks {
     addTask: (cardId: number, taskName: string) => void;

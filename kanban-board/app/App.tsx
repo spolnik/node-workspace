@@ -1,11 +1,11 @@
 import * as React from 'react';
 import {render} from 'react-dom';
 import createBrowserHistory = require("history/lib/createBrowserHistory");
-import KanbanBoardContainer from './KanbanBoardContainer';
-import KanbanBoard from "./KanbanBoard";
+import KanbanBoardContainer from './components/KanbanBoardContainer';
+import KanbanBoard from "./components/KanbanBoard";
 import {Router, Route} from "react-router";
-import NewCard from "./NewCard";
-import EditCard from "./EditCard";
+import NewCard from "./components/NewCard";
+import EditCard from "./components/EditCard";
 
 render((
     <Router history={createBrowserHistory()}>

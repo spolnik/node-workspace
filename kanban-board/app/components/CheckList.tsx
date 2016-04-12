@@ -1,6 +1,5 @@
 import * as React from "react";
-import {TaskModel} from "./KanbanBoard";
-import {TaskCallbacks} from "./interfaces";
+import {TaskCallbacks, TaskModel} from "./interfaces";
 
 export interface CheckListProps {
     cardId: number;

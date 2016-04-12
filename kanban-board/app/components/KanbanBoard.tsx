@@ -2,24 +2,9 @@ import * as React from 'react';
 import {DragDropContext} from "react-dnd";
 import HTML5Backend from "react-dnd-html5-backend";
 import List from './List';
-import {TaskCallbacks, CardCallbacks} from "./interfaces";
+import {TaskCallbacks, CardCallbacks, CardModel} from "./interfaces";
 import ReactElement = __React.ReactElement;
 import {Link} from "react-router";
-
-export interface TaskModel {
-    id: number;
-    done: boolean;
-    name: string;
-}
-
-export interface CardModel {
-    id: number;
-    title: string;
-    description: string;
-    color: string;
-    status: string;
-    tasks: TaskModel[];
-}
 
 export interface KanbanBoardProps {
     cards: CardModel[];

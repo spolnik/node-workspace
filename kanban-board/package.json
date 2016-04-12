@@ -25,6 +25,7 @@
     "webpack-dev-server": "~1.14.*"
   },
   "dependencies": {
+    "flux": "^2.1.1",
     "history": "^1.17.0",
     "marked": "^0.3.5",
     "react": "^15.0.0",

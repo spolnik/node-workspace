@@ -1,5 +1,5 @@
 node_modules
-app/*.js.map
-app/*.js
+app/**/*.js.map
+app/**/*.js
 typings
 *.log

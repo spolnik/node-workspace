@@ -1,7 +1,6 @@
 import * as React from "react";
 import CardForm from "./CardForm";
-import {CardCallbacks} from "./interfaces";
-import {CardModel} from "./KanbanBoard";
+import {CardCallbacks, CardModel} from "./interfaces";
 import update = require("react-addons-update");
 
 interface NewCardProps {
